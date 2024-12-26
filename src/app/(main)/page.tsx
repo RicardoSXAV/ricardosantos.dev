@@ -1,20 +1,22 @@
 "use client";
 
-import { useStore } from "@/lib/store";
 import "./page.styles.scss";
+import AppNavigator from "./components/AppNavigator";
+import SettingsBar from "./components/SettingsBar";
 
 export default function Home() {
-  const { count, increment } = useStore();
+  
 
   return (
-    <div>
+    <div className="home-wrapper">
       <header>
-        <h1>Zustand Counter</h1>
+        <SettingsBar />
       </header>
-      <main>
-        <p>Count: {count}</p>
-        <button onClick={increment}>Increment</button>
+      <main className="main-content">
+        Main
       </main>
+
+      <AppNavigator />
     </div>
   );
 }
