@@ -9,6 +9,7 @@
   border-radius: 16px;
 
   .app-item {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,5 +17,18 @@
     height: 3rem;
     border-radius: 8px;
     background-color: #ccc;
+    z-index: 2;
+
+    .app-icon {
+      pointer-events: none;
+      border-radius: 8px;
+    }
+
+    &.trash {
+      user-select: none;
+      background-color: transparent;
+      z-index: 1;
+    }
   }
 }
+
