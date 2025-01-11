@@ -5,8 +5,6 @@ import AppNavigator from "./components/AppNavigator";
 import SettingsBar from "./components/SettingsBar";
 
 export default function Home() {
-  
-
   return (
     <div className="home-wrapper">
       <header>

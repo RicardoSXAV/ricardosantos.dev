@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, PanInfo } from "framer-motion";
+import { AnimatePresence, motion, PanInfo, Reorder } from "framer-motion";
 
 import "./index.styles.scss";
 import { useDesktopStore } from "@/stores/desktop.store";
@@ -27,7 +27,6 @@ export default function AppNavigator() {
   const handleDragEnd = (id: string, info: PanInfo) => {
     if (isNearTrash(info.point)) {
       setNavApps(navApps.filter((app) => app.id !== id));
-
       const audio = new Audio("/sounds/trash-sound.mp3");
       audio.play();
     }
@@ -36,44 +35,51 @@ export default function AppNavigator() {
 
   return (
     <nav className="app-navigator">
-      <AnimatePresence mode="popLayout">
-        {navApps.map(({ id, name }) => {
-          const icon = appIcons[id as keyof typeof appIcons];
-          const isNearTrashBin = draggedItemNearTrash === id;
+      <Reorder.Group as="div" axis="x" values={navApps} onReorder={setNavApps} className="app-list">
+        <AnimatePresence mode="popLayout">
+          {navApps.map((app) => {
+            const icon = appIcons[app.id as keyof typeof appIcons];
+            const isNearTrashBin = draggedItemNearTrash === app.id;
 
-          return (
-            <motion.div
-              key={id}
-              layoutId={id}
-              layout
-              className="app-item"
-              drag
-              dragSnapToOrigin
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{
-                scale: isNearTrashBin ? 0.8 : 1,
-                opacity: isNearTrashBin ? 0.5 : 1
-              }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              whileDrag={{ scale: isNearTrashBin ? 0.8 : 1.1 }}
-              onDrag={(_, info) => {
-                setDraggedItemNearTrash(isNearTrash(info.point) ? id : null);
-              }}
-              onDragEnd={(_, info) => handleDragEnd(id, info)}
-            >
-              {icon && (
-                <Image
-                  src={icon}
-                  className="app-icon"
-                  alt={name}
-                  objectFit="cover"
-                  fill
-                />
-              )}
-            </motion.div>
-          );
-        })}
-      </AnimatePresence>
+            return (
+              <Reorder.Item
+                key={app.id}
+                value={app}
+                as="div"
+                layoutId={app.id}
+                className="app-item"
+                drag
+                dragSnapToOrigin
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{
+                  scale: isNearTrashBin ? 0.8 : 1,
+                  opacity: isNearTrashBin ? 0.5 : 1
+                }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                whileDrag={{ scale: isNearTrashBin ? 0.8 : 1.1, zIndex: 3 }}
+                onDrag={(_, info) => {
+                  setDraggedItemNearTrash(isNearTrash(info.point) ? app.id : null);
+                }}
+                onDragEnd={(_, info) => handleDragEnd(app.id, info)}
+                whileHover={{ scale: 1.05 }}
+                transition={{
+                  layout: { type: "spring", stiffness: 300, damping: 30 }
+                }}
+              >
+                {icon && (
+                  <Image
+                    src={icon}
+                    className="app-icon"
+                    alt={app.name}
+                    objectFit="cover"
+                    fill
+                  />
+                )}
+              </Reorder.Item>
+            );
+          })}
+        </AnimatePresence>
+      </Reorder.Group>
 
       <motion.div
         ref={trashRef}
