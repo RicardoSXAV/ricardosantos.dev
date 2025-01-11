@@ -7,17 +7,26 @@
   background-color: #ddd;
   padding: var(--space-md) var(--space-lg);
   border-radius: 16px;
+  z-index: 100;
+
+  .app-list {
+    display: flex;
+    column-gap: var(--space-md);
+    list-style: none;
+    z-index: 3;
+  }
 
   .app-item {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 3rem;
-    height: 3rem;
+    width: 48px;
+    height: 48px;
     border-radius: 8px;
     background-color: #ccc;
     z-index: 2;
+    touch-action: none;
 
     .app-icon {
       pointer-events: none;
