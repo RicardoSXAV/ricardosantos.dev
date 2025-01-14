@@ -7,7 +7,7 @@ import { useDesktopStore } from "@/stores/desktop.store";
 import appIcons from "@/assets/icons/apps";
 
 export default function AppNavigator() {
-  const { navApps, setNavApps } = useDesktopStore();
+  const { navApps, setNavApps, windows, setWindows } = useDesktopStore();
   const trashRef = useRef<HTMLDivElement>(null);
   const [draggedItemNearTrash, setDraggedItemNearTrash] = useState<string | null>(null);
 
@@ -31,6 +31,12 @@ export default function AppNavigator() {
       audio.play();
     }
     setDraggedItemNearTrash(null);
+  };
+
+  const handleAppClick = (id: string) => {
+    if (!windows.some((window) => window.appId === id)) {
+      setWindows([...windows, { appId: id, position: { x: 300, y: 300 }, size: { width: 300, height: 300 } }]);
+    }
   };
 
   return (
@@ -57,6 +63,7 @@ export default function AppNavigator() {
                 }}
                 exit={{ scale: 0.8, opacity: 0 }}
                 whileDrag={{ scale: isNearTrashBin ? 0.8 : 1.1, zIndex: 3 }}
+                onClick={() => handleAppClick(app.id)}
                 onDrag={(_, info) => {
                   setDraggedItemNearTrash(isNearTrash(info.point) ? app.id : null);
                 }}
@@ -71,7 +78,7 @@ export default function AppNavigator() {
                     src={icon}
                     className="app-icon"
                     alt={app.name}
-                    objectFit="cover"
+                    style={{ objectFit: "cover" }}
                     fill
                   />
                 )}

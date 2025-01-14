@@ -1,0 +1,150 @@
+.window {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  min-width: 200px;
+  min-height: 150px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+
+  &.active {
+    box-shadow: 0 12px 48px 0 rgba(31, 38, 135, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  &.dragging {
+    opacity: 0.95;
+    box-shadow: 0 16px 56px 0 rgba(31, 38, 135, 0.3);
+  }
+
+  &.maximizing {
+    transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease;
+  }
+
+  .window-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    user-select: none;
+
+    .window-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--grey-800);
+    }
+
+    .window-controls {
+      display: flex;
+      gap: var(--space-sm);
+
+      button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: rgba(0, 0, 0, 0.5);
+        transition: all 0.2s ease;
+
+        &.minimize { background: #ffbd44; }
+        &.maximize { background: #00ca4e; }
+        &.close { background: #ff605c; }
+
+        &:hover {
+          filter: brightness(0.9);
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+
+  .window-content {
+    padding: var(--space-lg);
+    height: calc(100% - 40px);
+    overflow: auto;
+  }
+
+  .resize-handle {
+    position: absolute;
+    background: transparent;
+    z-index: 2;
+
+    &.n {
+      top: -4px;
+      left: 4px;
+      right: 4px;
+      height: 8px;
+      cursor: ns-resize;
+    }
+
+    &.s {
+      bottom: -4px;
+      left: 4px;
+      right: 4px;
+      height: 8px;
+      cursor: ns-resize;
+    }
+
+    &.e {
+      top: 4px;
+      right: -4px;
+      bottom: 4px;
+      width: 8px;
+      cursor: ew-resize;
+    }
+
+    &.w {
+      top: 4px;
+      left: -4px;
+      bottom: 4px;
+      width: 8px;
+      cursor: ew-resize;
+    }
+
+    &.ne {
+      top: -4px;
+      right: -4px;
+      width: 12px;
+      height: 12px;
+      cursor: nesw-resize;
+    }
+
+    &.nw {
+      top: -4px;
+      left: -4px;
+      width: 12px;
+      height: 12px;
+      cursor: nwse-resize;
+    }
+
+    &.se {
+      bottom: -4px;
+      right: -4px;
+      width: 12px;
+      height: 12px;
+      cursor: nwse-resize;
+    }
+
+    &.sw {
+      bottom: -4px;
+      left: -4px;
+      width: 12px;
+      height: 12px;
+      cursor: nesw-resize;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
