@@ -3,6 +3,7 @@
 import "./page.styles.scss";
 import AppNavigator from "./components/AppNavigator";
 import SettingsBar from "./components/SettingsBar";
+import WindowManager from "./components/WindowManager";
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
         <SettingsBar />
       </header>
       <main className="main-content">
-        Main
+        <WindowManager />
       </main>
 
       <AppNavigator />
