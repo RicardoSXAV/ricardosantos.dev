@@ -1,12 +1,12 @@
 import "./index.styles.scss";
-import { useState } from "react";
+
 import { AnimatePresence } from "framer-motion";
+
 import { useDesktopStore } from "@/stores/desktop.store";
 import Window from "@/components/Window";
 
 export default function WindowManager() {
-  const { windows, setWindows } = useDesktopStore();
-  const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
+  const { windows, setWindows, activeWindowId, setActiveWindowId } = useDesktopStore();
 
   const handlePositionChange = (id: string, position: { x: number; y: number }) => {
     setWindows(
@@ -26,16 +26,21 @@ export default function WindowManager() {
 
   const handleWindowFocus = (id: string) => {
     setActiveWindowId(id);
-    setWindows([
-      ...windows.filter(w => w.appId !== id),
-      windows.find(w => w.appId === id)!
-    ]);
+
+    const maxZIndex = Math.max(0, ...windows.map(w => w.zIndex));
+    setWindows(
+      windows.map((window) =>
+        window.appId === id ? { ...window, zIndex: maxZIndex + 1 } : window
+      )
+    );
   };
+
+  const sortedWindows = [...windows].sort((a, b) => a.zIndex - b.zIndex);
 
   return (
     <div className="window-manager" onClick={() => setActiveWindowId(null)}>
       <AnimatePresence mode="popLayout">
-        {windows.map((window) => (
+        {sortedWindows.map((window) => (
           <Window
             key={window.appId}
             window={window}

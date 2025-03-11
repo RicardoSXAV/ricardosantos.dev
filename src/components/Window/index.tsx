@@ -1,6 +1,6 @@
 import "./index.styles.scss";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useDragControls, useMotionValue } from "framer-motion";
 
 import { DesktopWindow } from "@/ts/interfaces/desktop.interfaces";
@@ -25,7 +25,7 @@ export default function Window({
   onFocus,
   isActive,
 }: WindowProps) {
-  const { windows, setWindows } = useDesktopStore();
+  const { windows, setWindows, navApps } = useDesktopStore();
 
   const dragControls = useDragControls();
   const windowRef = useRef<HTMLDivElement>(null);
@@ -65,7 +65,6 @@ export default function Window({
     let newX = x.get();
     let newY = y.get();
 
-    // Handle horizontal resizing
     if (direction.includes("e")) {
       const possibleWidth = Math.max(minWidth, width.get() + deltaX);
       newWidth = Math.min(maxWidth - x.get(), possibleWidth);
@@ -78,7 +77,6 @@ export default function Window({
       }
     }
 
-    // Handle vertical resizing
     if (direction.includes("s")) {
       const possibleHeight = Math.max(minHeight, height.get() + deltaY);
       newHeight = Math.min(maxHeight - y.get(), possibleHeight);
@@ -91,18 +89,15 @@ export default function Window({
       }
     }
 
-    // Update position and size
     x.set(newX);
     y.set(newY);
     width.set(newWidth);
     height.set(newHeight);
 
-    // Update constraints immediately after resize
     updateConstraints();
   };
 
-  // Move updateConstraints outside the effect so it can be called from handleResize
-  const updateConstraints = () => {
+  const updateConstraints = useCallback(() => {
     const windowManager = windowRef.current?.parentElement;
     if (windowManager) {
       const managerRect = windowManager.getBoundingClientRect();
@@ -116,11 +111,10 @@ export default function Window({
         bottom: maxY,
       });
 
-      // Ensure window stays within bounds
       x.set(Math.min(maxX, Math.max(0, x.get())));
       y.set(Math.min(maxY, Math.max(0, y.get())));
     }
-  };
+  }, [width, height, x, y, setConstraints]);
 
   useEffect(() => {
     const resizeObserver = new ResizeObserver(updateConstraints);
@@ -140,7 +134,7 @@ export default function Window({
       resizeObserver.disconnect();
       window.removeEventListener("resize", updateConstraints);
     };
-  }, [width, height, x, y]);
+  }, [updateConstraints]);
 
   const handleClose = (appId: string) => {
     console.log("Close window", appId);
@@ -216,7 +210,7 @@ export default function Window({
       animate={{
         scale: 1,
         opacity: 1,
-        zIndex: isActive ? 10 : 1,
+        zIndex: desktopWindow.zIndex,
         transition: { duration: 0.2 },
       }}
       exit={{ scale: 0.9, opacity: 0 }}
@@ -253,12 +247,13 @@ export default function Window({
       >
         <div className="window-title">
           <Image
+            className="window-icon"
             src={appIcons[desktopWindow.appId as keyof typeof appIcons]}
             alt={desktopWindow.appId}
             width={24}
             height={24}
           />
-          {desktopWindow.appId}
+          {navApps.find((app) => app.id === desktopWindow.appId)?.name}
         </div>
         <div className="window-controls">
           <button

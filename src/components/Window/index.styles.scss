@@ -34,9 +34,16 @@
     user-select: none;
 
     .window-title {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
       font-size: 14px;
       font-weight: 500;
       color: var(--grey-800);
+
+      .window-icon {
+        border-radius: 4px;
+      }
     }
 
     .window-controls {

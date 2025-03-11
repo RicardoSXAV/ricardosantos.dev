@@ -7,7 +7,7 @@ import { useDesktopStore } from "@/stores/desktop.store";
 import appIcons from "@/assets/icons/apps";
 
 export default function AppNavigator() {
-  const { navApps, setNavApps, windows, setWindows } = useDesktopStore();
+  const { navApps, setNavApps, windows, setWindows, setActiveWindowId } = useDesktopStore();
   const trashRef = useRef<HTMLDivElement>(null);
   const [draggedItemNearTrash, setDraggedItemNearTrash] = useState<string | null>(null);
 
@@ -35,7 +35,35 @@ export default function AppNavigator() {
 
   const handleAppClick = (id: string) => {
     if (!windows.some((window) => window.appId === id)) {
-      setWindows([...windows, { appId: id, position: { x: 300, y: 300 }, size: { width: 300, height: 300 } }]);
+      // Create new window and set it as active
+      const newWindow = { 
+        appId: id, 
+        position: { x: 300, y: 300 }, 
+        size: { width: 300, height: 300 },
+        zIndex: Math.max(0, ...windows.map(w => w.zIndex)) + 1
+      };
+      setWindows([...windows, newWindow]);
+      // Also update the active window in WindowManager
+      if (typeof setActiveWindowId === 'function') {
+        setActiveWindowId(id);
+      }
+    } else {
+      // Find the window and bring it to front
+      const existingWindow = windows.find(w => w.appId === id);
+      if (existingWindow) {
+        // Update z-index of all windows
+        const updatedWindows = windows.map(w => ({
+          ...w,
+          zIndex: w.appId === id ? 
+            Math.max(0, ...windows.map(w => w.zIndex)) + 1 : 
+            w.zIndex
+        }));
+        setWindows(updatedWindows);
+        // Also update the active window in WindowManager
+        if (typeof setActiveWindowId === 'function') {
+          setActiveWindowId(id);
+        }
+      }
     }
   };
 
