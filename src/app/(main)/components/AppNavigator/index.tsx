@@ -35,7 +35,7 @@ export default function AppNavigator() {
 
   const handleAppClick = (id: string) => {
     if (!windows.some((window) => window.appId === id)) {
-      // Create new window and set it as active
+
       const newWindow = { 
         appId: id, 
         position: { x: 300, y: 300 }, 
@@ -43,15 +43,11 @@ export default function AppNavigator() {
         zIndex: Math.max(0, ...windows.map(w => w.zIndex)) + 1
       };
       setWindows([...windows, newWindow]);
-      // Also update the active window in WindowManager
-      if (typeof setActiveWindowId === 'function') {
-        setActiveWindowId(id);
-      }
+
+      setActiveWindowId(id);
     } else {
-      // Find the window and bring it to front
       const existingWindow = windows.find(w => w.appId === id);
       if (existingWindow) {
-        // Update z-index of all windows
         const updatedWindows = windows.map(w => ({
           ...w,
           zIndex: w.appId === id ? 
@@ -59,10 +55,8 @@ export default function AppNavigator() {
             w.zIndex
         }));
         setWindows(updatedWindows);
-        // Also update the active window in WindowManager
-        if (typeof setActiveWindowId === 'function') {
-          setActiveWindowId(id);
-        }
+
+        setActiveWindowId(id);
       }
     }
   };
