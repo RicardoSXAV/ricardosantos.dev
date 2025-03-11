@@ -34,8 +34,21 @@ export default function AppNavigator() {
   };
 
   const handleAppClick = (id: string) => {
+    // Check if there's a minimized window for this app
+    const minimizedWindow = windows.find(w => w.appId === id && w.minimized);
+    
+    if (minimizedWindow) {
+      // Restore the minimized window
+      const updatedWindows = windows.map(w => 
+        w.appId === id ? { ...w, minimized: false, zIndex: Math.max(0, ...windows.map(w => w.zIndex)) + 1 } : w
+      );
+      setWindows(updatedWindows);
+      setActiveWindowId(id);
+      return;
+    }
+    
+    // If no minimized window, proceed with normal behavior
     if (!windows.some((window) => window.appId === id)) {
-
       const newWindow = { 
         appId: id, 
         position: { x: 300, y: 300 }, 
@@ -68,6 +81,7 @@ export default function AppNavigator() {
           {navApps.map((app) => {
             const icon = appIcons[app.id as keyof typeof appIcons];
             const isNearTrashBin = draggedItemNearTrash === app.id;
+            const hasMinimizedWindow = windows.some(w => w.appId === app.id && w.minimized);
 
             return (
               <Reorder.Item
@@ -76,6 +90,7 @@ export default function AppNavigator() {
                 as="div"
                 layoutId={app.id}
                 className="app-item"
+                data-app-id={app.id}
                 drag
                 dragSnapToOrigin
                 initial={{ scale: 0.8, opacity: 0 }}
@@ -102,6 +117,16 @@ export default function AppNavigator() {
                     alt={app.name}
                     style={{ objectFit: "cover" }}
                     fill
+                  />
+                )}
+                
+                {/* Indicator dot for minimized windows */}
+                {hasMinimizedWindow && (
+                  <motion.div 
+                    className="minimized-indicator"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
                   />
                 )}
               </Reorder.Item>

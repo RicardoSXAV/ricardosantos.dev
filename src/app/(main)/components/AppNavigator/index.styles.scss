@@ -44,5 +44,16 @@
       background-color: transparent;
       z-index: 1;
     }
+
+    .minimized-indicator {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 8px;
+      height: 8px;
+      background-color: #00ca4e;
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(0, 202, 78, 0.5);
+    }
   }
 }

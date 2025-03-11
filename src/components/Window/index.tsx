@@ -1,7 +1,7 @@
 import "./index.styles.scss";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, useDragControls, useMotionValue } from "framer-motion";
+import { motion, useDragControls, useMotionValue, animate } from "framer-motion";
 
 import { DesktopWindow } from "@/ts/interfaces/desktop.interfaces";
 import { useDesktopStore } from "@/stores/desktop.store";
@@ -32,6 +32,7 @@ export default function Window({
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [isMaximizing, setIsMaximizing] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(desktopWindow.minimized || false);
   const [constraints, setConstraints] = useState({
     left: 0,
     top: 0,
@@ -40,11 +41,49 @@ export default function Window({
   });
   const [isMaximized, setIsMaximized] = useState(false);
   const previousSize = useRef({ x: 0, y: 0, width: 0, height: 0 });
+  const [minimizeTarget, setMinimizeTarget] = useState({ x: 0, y: 0 });
+  const previousPosition = useRef({ x: 0, y: 0 });
 
   const x = useMotionValue(desktopWindow.position.x);
   const y = useMotionValue(desktopWindow.position.y);
   const width = useMotionValue(desktopWindow.size.width);
   const height = useMotionValue(desktopWindow.size.height);
+
+  // Update local state when window props change
+  useEffect(() => {
+    setIsMinimized(desktopWindow.minimized || false);
+  }, [desktopWindow.minimized]);
+
+  // Find the exact position of the app icon in the dock
+  useEffect(() => {
+    const findAppIconPosition = () => {
+      const appId = desktopWindow.appId;
+      const appElement = document.querySelector(`[data-app-id="${appId}"]`);
+      
+      if (appElement) {
+        const rect = appElement.getBoundingClientRect();
+        setMinimizeTarget({
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2
+        });
+      } else {
+        // Fallback if app icon not found
+        setMinimizeTarget({
+          x: window.innerWidth / 2,
+          y: window.innerHeight - 40
+        });
+      }
+    };
+
+    findAppIconPosition();
+    
+    // Update position on window resize
+    window.addEventListener('resize', findAppIconPosition);
+    
+    return () => {
+      window.removeEventListener('resize', findAppIconPosition);
+    };
+  }, [desktopWindow.appId]);
 
   const handleResize = (
     direction: ResizeDirection,
@@ -183,6 +222,65 @@ export default function Window({
     updateConstraints();
   };
 
+  const handleMinimize = () => {
+    // Store the current position before minimizing
+    previousPosition.current = {
+      x: x.get(),
+      y: y.get()
+    };
+    
+    // Animate to the target position
+    animate(x, minimizeTarget.x - width.get() / 2, {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      mass: 0.8,
+      duration: 0.4
+    });
+    
+    animate(y, minimizeTarget.y - height.get() / 2, {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+      mass: 0.8,
+      duration: 0.4
+    });
+    
+    setIsMinimized(true);
+    
+    // Update the window state in the store
+    const updatedWindows = windows.map(w => 
+      w.appId === desktopWindow.appId 
+        ? { ...w, minimized: true } 
+        : w
+    );
+    setWindows(updatedWindows);
+  };
+
+  useEffect(() => {
+    // If the window was minimized and is now being restored
+    if (!desktopWindow.minimized && isMinimized) {
+      // Restore to the previous position
+      animate(x, previousPosition.current.x, {
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
+        mass: 0.8,
+        duration: 0.4
+      });
+      
+      animate(y, previousPosition.current.y, {
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
+        mass: 0.8,
+        duration: 0.4
+      });
+      
+      setIsMinimized(false);
+    }
+  }, [desktopWindow.minimized, isMinimized, x, y]);
+
   const ResizeHandle = ({ direction }: { direction: ResizeDirection }) => (
     <motion.div
       className={`resize-handle ${direction}`}
@@ -205,31 +303,50 @@ export default function Window({
       ref={windowRef}
       className={`window ${isActive ? "active" : ""} ${
         isDragging ? "dragging" : ""
-      } ${isResizing ? "resizing" : ""} ${isMaximizing ? "maximizing" : ""}`}
+      } ${isResizing ? "resizing" : ""} ${isMaximizing ? "maximizing" : ""} ${
+        isMinimized ? "minimized" : ""
+      }`}
       initial={{ scale: 0.95, opacity: 0 }}
       animate={{
-        scale: 1,
-        opacity: 1,
+        scale: isMinimized ? 0.2 : 1,
+        opacity: isMinimized ? 0 : 1,
+        rotateX: isMinimized ? 45 : 0,
+        rotateY: isMinimized ? 10 : 0,
         zIndex: desktopWindow.zIndex,
-        transition: { duration: 0.2 },
+        transition: { 
+          type: "spring",
+          stiffness: 300,
+          damping: 20,
+          mass: 0.8,
+          duration: 0.4
+        },
       }}
       exit={{ scale: 0.9, opacity: 0 }}
-      drag
+      drag={!isMinimized}
       dragControls={dragControls}
       dragMomentum={false}
       dragElastic={1}
       dragListener={false}
       dragConstraints={constraints}
-      style={{ x, y, width, height }}
+      style={{ 
+        x, 
+        y, 
+        width, 
+        height,
+        pointerEvents: isMinimized ? "none" : "auto",
+        transformPerspective: 1000
+      }}
       onClick={(e) => {
         e.stopPropagation();
-        onFocus();
+        if (!isMinimized) onFocus();
       }}
       onDragStart={() => {
+        if (isMinimized) return;
         setIsDragging(true);
         onFocus();
       }}
       onDragEnd={() => {
+        if (isMinimized) return;
         setIsDragging(false);
         onPositionChange(desktopWindow.appId, {
           x: x.get(),
@@ -263,7 +380,13 @@ export default function Window({
               handleClose(desktopWindow.appId);
             }}
           />
-          <button className="minimize" />
+          <button
+            className="minimize"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleMinimize();
+            }}
+          />
           <button
             className="maximize"
             onClick={(e) => {

@@ -9,6 +9,11 @@
   min-height: 150px;
   overflow: hidden;
   transition: box-shadow 0.2s ease;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 
   &.active {
     box-shadow: 0 12px 48px 0 rgba(31, 38, 135, 0.25);
@@ -18,10 +23,19 @@
   &.dragging {
     opacity: 0.95;
     box-shadow: 0 16px 56px 0 rgba(31, 38, 135, 0.3);
+    cursor: grabbing;
   }
 
   &.maximizing {
     transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease;
+  }
+
+  &.minimized {
+    pointer-events: none;
+    visibility: visible;
+    opacity: 0;
+    transform-origin: center center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
   }
 
   .window-header {
