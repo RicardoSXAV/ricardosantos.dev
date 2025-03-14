@@ -10,3 +10,5 @@ export interface DesktopWindow {
   zIndex: number;
   minimized?: boolean;
 }
+
+export type ResizeDirection = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";

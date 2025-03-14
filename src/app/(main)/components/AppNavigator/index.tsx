@@ -10,6 +10,7 @@ export default function AppNavigator() {
   const { navApps, setNavApps, windows, setWindows, setActiveWindowId } = useDesktopStore();
   const trashRef = useRef<HTMLDivElement>(null);
   const [draggedItemNearTrash, setDraggedItemNearTrash] = useState<string | null>(null);
+  const [draggingItemId, setDraggingItemId] = useState<string | null>(null);
 
   const isNearTrash = (point: { x: number; y: number }) => {
     if (!trashRef.current) return false;
@@ -31,14 +32,13 @@ export default function AppNavigator() {
       audio.play();
     }
     setDraggedItemNearTrash(null);
+    setDraggingItemId(null);
   };
 
   const handleAppClick = (id: string) => {
-    // Check if there's a minimized window for this app
     const minimizedWindow = windows.find(w => w.appId === id && w.minimized);
     
-    if (minimizedWindow) {
-      // Restore the minimized window
+    if (minimizedWindow && !draggingItemId) {
       const updatedWindows = windows.map(w => 
         w.appId === id ? { ...w, minimized: false, zIndex: Math.max(0, ...windows.map(w => w.zIndex)) + 1 } : w
       );
@@ -46,13 +46,12 @@ export default function AppNavigator() {
       setActiveWindowId(id);
       return;
     }
-    
-    // If no minimized window, proceed with normal behavior
+
     if (!windows.some((window) => window.appId === id)) {
       const newWindow = { 
         appId: id, 
         position: { x: 300, y: 300 }, 
-        size: { width: 300, height: 300 },
+        size: { width: 450, height: 300 },
         zIndex: Math.max(0, ...windows.map(w => w.zIndex)) + 1
       };
       setWindows([...windows, newWindow]);
@@ -82,6 +81,7 @@ export default function AppNavigator() {
             const icon = appIcons[app.id as keyof typeof appIcons];
             const isNearTrashBin = draggedItemNearTrash === app.id;
             const hasMinimizedWindow = windows.some(w => w.appId === app.id && w.minimized);
+            const isBeingDragged = draggingItemId === app.id;
 
             return (
               <Reorder.Item
@@ -101,6 +101,7 @@ export default function AppNavigator() {
                 exit={{ scale: 0.8, opacity: 0 }}
                 whileDrag={{ scale: isNearTrashBin ? 0.8 : 1.1, zIndex: 3 }}
                 onClick={() => handleAppClick(app.id)}
+                onDragStart={() => setDraggingItemId(app.id)}
                 onDrag={(_, info) => {
                   setDraggedItemNearTrash(isNearTrash(info.point) ? app.id : null);
                 }}
@@ -119,10 +120,9 @@ export default function AppNavigator() {
                     fill
                   />
                 )}
-                
-                {/* Indicator dot for minimized windows */}
-                {hasMinimizedWindow && (
-                  <motion.div 
+
+                {hasMinimizedWindow && !isBeingDragged && (
+                  <motion.div
                     className="minimized-indicator"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
