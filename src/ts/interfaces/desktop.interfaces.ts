@@ -4,7 +4,11 @@ export interface DesktopApp {
 }
 
 export interface DesktopWindow {
-  id: string;
+  appId: string;
   position: { x: number; y: number };
   size: { width: number; height: number };
+  zIndex: number;
+  minimized?: boolean;
 }
+
+export type ResizeDirection = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";

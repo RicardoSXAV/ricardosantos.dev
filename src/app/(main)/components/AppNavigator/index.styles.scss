@@ -1,6 +1,6 @@
 .app-navigator {
   position: absolute;
-  bottom: var(--space-lg);
+  bottom: var(--space-xl);
   display: flex;
   align-self: center;
   column-gap: var(--space-md);
@@ -10,7 +10,8 @@
   -webkit-backdrop-filter: blur(8px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  padding: var(--space-md) var(--space-lg);
+  padding: var(--space-md) var(--space-xl);
+  padding-bottom: var(--space-lg);
   border-radius: 16px;
   z-index: 100;
 
@@ -43,6 +44,16 @@
       user-select: none;
       background-color: transparent;
       z-index: 1;
+    }
+
+    .minimized-indicator {
+      position: absolute;
+      bottom: -8px;
+      width: 5px;
+      height: 5px;
+      background-color: var(--grey-200);
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(var(--grey-500), 0.5);
     }
   }
 }
