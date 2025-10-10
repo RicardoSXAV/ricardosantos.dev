@@ -1,0 +1,23 @@
+{
+  "settings": {
+    "title": "Configurações",
+    "search": "Buscar",
+    "general": "Geral",
+    "languageAndRegion": "Idioma e Região",
+    "appearance": "Aparência",
+    "generalDescription": "Gerencie configurações gerais e preferências, incluindo idioma, localização do navegador de aplicativos e configurações de tema.",
+    "languageAndRegionDescription": "Configure seu idioma preferido e configurações regionais para a aplicação.",
+    "appearanceDescription": "Personalize a aparência visual e o tema da sua aplicação.",
+    "version": "Versão",
+    "appearanceComingSoon": "Configurações de aparência em breve..."
+  },
+  "languageAndRegion": {
+    "title": "Idioma e Região",
+    "description": "Configure seu idioma preferido e configurações regionais para a aplicação.",
+    "language": "Idioma",
+    "preferredLanguage": "Idioma Preferido",
+    "selectLanguage": "Selecione o idioma para a interface da aplicação",
+    "english": "Inglês",
+    "portuguese": "Português"
+  }
+}

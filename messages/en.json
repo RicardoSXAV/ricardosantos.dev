@@ -1,0 +1,23 @@
+{
+  "settings": {
+    "title": "Settings",
+    "search": "Search",
+    "general": "General",
+    "languageAndRegion": "Language and Region",
+    "appearance": "Appearance",
+    "generalDescription": "Manage general configurations and preferences, including language, app navigator location, and theme settings.",
+    "languageAndRegionDescription": "Configure your preferred language and regional settings for the application.",
+    "appearanceDescription": "Customize the visual appearance and theme of your application.",
+    "version": "Version",
+    "appearanceComingSoon": "Appearance settings coming soon..."
+  },
+  "languageAndRegion": {
+    "title": "Language and Region",
+    "description": "Configure your preferred language and regional settings for the application.",
+    "language": "Language",
+    "preferredLanguage": "Preferred Language",
+    "selectLanguage": "Select the language for the application interface",
+    "english": "English",
+    "portuguese": "Portuguese"
+  }
+}
