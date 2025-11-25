@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 import { DesktopApp, DesktopWindow } from '@/ts/interfaces/desktop.interfaces';
 import { DEFAULT_NAV_APPS } from './data/desktop.data';
@@ -22,18 +23,29 @@ interface DesktopStore {
   setTheme: (theme: ThemeVariant) => void;
 }
 
-export const useDesktopStore = create<DesktopStore>((set) => ({
-  navApps: DEFAULT_NAV_APPS,
-  trashedApps: [],
-  windows: [],
-  activeWindowId: null,
-  navigatorOrientation: 'bottom',
-  theme: 'light',
+export const useDesktopStore = create<DesktopStore>()(
+  persist(
+    (set) => ({
+      navApps: DEFAULT_NAV_APPS,
+      trashedApps: [],
+      windows: [],
+      activeWindowId: null,
+      navigatorOrientation: 'bottom',
+      theme: 'light',
 
-  setWindows: (windows: DesktopWindow[]) => set({ windows }),
-  setNavApps: (navApps: DesktopApp[]) => set({ navApps }),
-  setTrashedApps: (trashedApps: DesktopApp[]) => set({ trashedApps }),
-  setActiveWindowId: (activeWindowId: string | null) => set({ activeWindowId }),
-  setNavigatorOrientation: (navigatorOrientation: NavigatorOrientation) => set({ navigatorOrientation }),
-  setTheme: (theme: ThemeVariant) => set({ theme }),
-}));
+      setWindows: (windows: DesktopWindow[]) => set({ windows }),
+      setNavApps: (navApps: DesktopApp[]) => set({ navApps }),
+      setTrashedApps: (trashedApps: DesktopApp[]) => set({ trashedApps }),
+      setActiveWindowId: (activeWindowId: string | null) => set({ activeWindowId }),
+      setNavigatorOrientation: (navigatorOrientation: NavigatorOrientation) => set({ navigatorOrientation }),
+      setTheme: (theme: ThemeVariant) => set({ theme }),
+    }),
+    {
+      name: 'desktop-preferences',
+      partialize: (state) => ({
+        navigatorOrientation: state.navigatorOrientation,
+        theme: state.theme,
+      }),
+    }
+  )
+);

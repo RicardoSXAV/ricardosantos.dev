@@ -1,9 +1,14 @@
 "use client";
 
+import dynamic from "next/dynamic";
+
 import "./page.styles.scss";
-import AppNavigator from "./components/AppNavigator";
 import SettingsBar from "./components/SettingsBar";
 import WindowManager from "./components/WindowManager";
+
+const AppNavigator = dynamic(() => import("./components/AppNavigator"), {
+  ssr: false,
+});
 
 export default function Home() {
   return (
