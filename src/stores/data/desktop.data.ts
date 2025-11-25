@@ -6,3 +6,7 @@ export const DEFAULT_NAV_APPS: DesktopApp[] = [
   { id: 'linkedin', name: 'LinkedIn' },
   { id: 'settings', name: 'Settings' },
 ];
+
+export const STATIC_APP_NAMES: Record<string, string> = {
+  trash: "Trash",
+};

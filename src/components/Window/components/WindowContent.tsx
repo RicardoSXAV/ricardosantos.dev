@@ -1,4 +1,5 @@
 import SettingsContent from "../contents/SettingsContent";
+import TrashContent from "../contents/TrashContent";
 
 interface WindowContentProps {
   appId: string;
@@ -7,6 +8,7 @@ interface WindowContentProps {
 
 const contentMap: Record<string, React.ReactNode> = {
   settings: <SettingsContent />,
+  trash: <TrashContent />,
 };
 
 export default function WindowContent({ appId, children }: WindowContentProps) {

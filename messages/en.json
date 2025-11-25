@@ -28,5 +28,13 @@
     "navigationTop": "Top",
     "navigationLeft": "Left",
     "navigationRight": "Right"
+  },
+  "trash": {
+    "title": "Trash",
+    "description": "Apps removed from the navigator stay here so you can restore them whenever you want.",
+    "emptyTitle": "Trash is empty",
+    "emptyDescription": "Drag an app onto the trash icon to remove it from the navigator.",
+    "restore": "Restore",
+    "restoreAll": "Restore all"
   }
 }

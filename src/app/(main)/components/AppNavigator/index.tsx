@@ -7,7 +7,16 @@ import { useDesktopStore } from "@/stores/desktop.store";
 import appIcons from "@/assets/icons/apps";
 
 export default function AppNavigator() {
-  const { navApps, setNavApps, windows, setWindows, setActiveWindowId, navigatorOrientation } = useDesktopStore();
+  const { 
+    navApps,
+    trashedApps,
+    setNavApps,
+    setTrashedApps,
+    windows,
+    setWindows,
+    setActiveWindowId,
+    navigatorOrientation
+  } = useDesktopStore();
   const trashRef = useRef<HTMLDivElement>(null);
   const [draggedItemNearTrash, setDraggedItemNearTrash] = useState<string | null>(null);
   const [draggingItemId, setDraggingItemId] = useState<string | null>(null);
@@ -27,7 +36,17 @@ export default function AppNavigator() {
 
   const handleDragEnd = (id: string, info: PanInfo) => {
     if (isNearTrash(info.point)) {
+      const removedApp = navApps.find((app) => app.id === id);
       setNavApps(navApps.filter((app) => app.id !== id));
+
+      if (removedApp) {
+        const updatedTrashedApps = [
+          ...trashedApps.filter((app) => app.id !== removedApp.id),
+          removedApp,
+        ];
+        setTrashedApps(updatedTrashedApps);
+      }
+
       const audio = new Audio("/sounds/trash-sound.mp3");
       audio.play();
     }
@@ -35,12 +54,17 @@ export default function AppNavigator() {
     setDraggingItemId(null);
   };
 
-  const handleAppClick = (id: string) => {
-    const minimizedWindow = windows.find(w => w.appId === id && w.minimized);
-    
-    if (minimizedWindow && !draggingItemId) {
-      const updatedWindows = windows.map(w => 
-        w.appId === id ? { ...w, minimized: false, zIndex: Math.max(0, ...windows.map(w => w.zIndex)) + 1 } : w
+  const getNextZIndex = () => Math.max(0, ...windows.map((w) => w.zIndex)) + 1;
+
+  const openWindow = (id: string) => {
+    const nextZIndex = getNextZIndex();
+    const minimizedWindow = windows.find((w) => w.appId === id && w.minimized);
+
+    if (minimizedWindow) {
+      const updatedWindows = windows.map((w) =>
+        w.appId === id
+          ? { ...w, minimized: false, zIndex: nextZIndex }
+          : w
       );
       setWindows(updatedWindows);
       setActiveWindowId(id);
@@ -48,29 +72,33 @@ export default function AppNavigator() {
     }
 
     if (!windows.some((window) => window.appId === id)) {
-      const newWindow = { 
-        appId: id, 
-        position: { x: 300, y: 300 }, 
+      const newWindow = {
+        appId: id,
+        position: { x: 300, y: 300 },
         size: { width: 450, height: 300 },
-        zIndex: Math.max(0, ...windows.map(w => w.zIndex)) + 1
+        zIndex: nextZIndex,
       };
       setWindows([...windows, newWindow]);
-
       setActiveWindowId(id);
-    } else {
-      const existingWindow = windows.find(w => w.appId === id);
-      if (existingWindow) {
-        const updatedWindows = windows.map(w => ({
-          ...w,
-          zIndex: w.appId === id ? 
-            Math.max(0, ...windows.map(w => w.zIndex)) + 1 : 
-            w.zIndex
-        }));
-        setWindows(updatedWindows);
-
-        setActiveWindowId(id);
-      }
+      return;
     }
+
+    const updatedWindows = windows.map((w) => ({
+      ...w,
+      zIndex: w.appId === id ? nextZIndex : w.zIndex,
+    }));
+    setWindows(updatedWindows);
+    setActiveWindowId(id);
+  };
+
+  const handleAppClick = (id: string) => {
+    if (draggingItemId) return;
+    openWindow(id);
+  };
+
+  const handleTrashClick = () => {
+    if (draggingItemId) return;
+    openWindow("trash");
   };
 
   const isVertical = navigatorOrientation === 'left' || navigatorOrientation === 'right';
@@ -141,8 +169,18 @@ export default function AppNavigator() {
       <motion.div
         ref={trashRef}
         className="app-item trash"
+        data-app-id="trash"
+        role="button"
+        tabIndex={0}
         whileHover={{ scale: 1.05 }}
         animate={{ opacity: 1 }}
+        onClick={handleTrashClick}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            handleTrashClick();
+          }
+        }}
       >
         <Image src={appIcons.trash} className="app-icon" alt="Trash" fill />
       </motion.div>

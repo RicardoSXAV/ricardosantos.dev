@@ -28,5 +28,13 @@
     "navigationTop": "Superior",
     "navigationLeft": "Esquerda",
     "navigationRight": "Direita"
+  },
+  "trash": {
+    "title": "Lixeira",
+    "description": "Os apps removidos do navegador ficam aqui para você restaurá-los quando quiser.",
+    "emptyTitle": "Lixeira vazia",
+    "emptyDescription": "Arraste um app para o ícone da lixeira para removê-lo do navegador.",
+    "restore": "Restaurar",
+    "restoreAll": "Restaurar todos"
   }
 }
