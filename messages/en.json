@@ -19,5 +19,14 @@
     "selectLanguage": "Select the language for the application interface",
     "english": "English",
     "portuguese": "Portuguese"
+  },
+  "appearance": {
+    "navigation": "Navigation",
+    "navigationOrientation": "App Navigator Orientation",
+    "navigationOrientationDescription": "Choose where the app navigator appears on your screen",
+    "navigationBottom": "Bottom",
+    "navigationTop": "Top",
+    "navigationLeft": "Left",
+    "navigationRight": "Right"
   }
 }

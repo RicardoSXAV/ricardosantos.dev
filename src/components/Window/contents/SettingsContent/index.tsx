@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import searchIcon from "@/assets/icons/interface/lu-search.svg";
 import LanguageSection from "./components/LanguageSection";
+import AppearanceSection from "./components/AppearanceSection";
 import { useTranslation, T } from "@/hooks/useTranslation";
 import type en from "../../../../../messages/en.json";
 
@@ -35,31 +36,18 @@ export default function SettingsContent() {
   const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState("general");
 
-  const currentCategory = settingsCategories.find(
-    (cat) => cat.id === selectedCategory
-  );
+  const currentCategory = settingsCategories.find((cat) => cat.id === selectedCategory);
 
-  const renderCategoryContent = () => {
-    switch (selectedCategory) {
-      case "language-and-region":
-        return <LanguageSection />;
-      case "general":
-        return (
-          <div className="settings-section">
-            <p>
-              <T k="settings.version" />: 0.0.1
-            </p>
-          </div>
-        );
-      case "appearance":
-        return (
-          <div className="settings-section">
-            <T k="settings.appearanceComingSoon" as="p" />
-          </div>
-        );
-      default:
-        return null;
-    }
+  const categoryContentMap: Record<string, React.ReactNode> = {
+    "language-and-region": <LanguageSection />,
+    general: (
+      <div className="settings-section">
+        <p>
+          <T k="settings.version" />: 0.0.1
+        </p>
+      </div>
+    ),
+    appearance: <AppearanceSection />,
   };
 
   return (
@@ -92,20 +80,40 @@ export default function SettingsContent() {
         <div className="settings-header">
           <div className="settings-icon">{currentCategory?.icon}</div>
           {currentCategory && (
-            <T k={currentCategory.labelKey} as="h2" className="settings-title" />
+            <T 
+              k={currentCategory.labelKey} 
+              as="h2" 
+              className="settings-title" 
+              key={currentCategory.id}
+            />
           )}
           {selectedCategory === "general" && (
-            <T k="settings.generalDescription" as="p" className="settings-description" />
+            <T 
+              k="settings.generalDescription" 
+              as="p" 
+              className="settings-description" 
+              key="general-description"
+            />
           )}
           {selectedCategory === "language-and-region" && (
-            <T k="settings.languageAndRegionDescription" as="p" className="settings-description" />
+            <T 
+              k="settings.languageAndRegionDescription" 
+              as="p" 
+              className="settings-description" 
+              key="language-and-region-description"
+            />
           )}
           {selectedCategory === "appearance" && (
-            <T k="settings.appearanceDescription" as="p" className="settings-description" />
+            <T 
+              k="settings.appearanceDescription" 
+              as="p" 
+              className="settings-description" 
+              key="appearance-description"
+            />
           )}
         </div>
 
-        <div className="settings-options">{renderCategoryContent()}</div>
+        <div className="settings-options">{categoryContentMap[selectedCategory]}</div>
       </div>
     </div>
   );

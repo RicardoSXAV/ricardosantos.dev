@@ -7,7 +7,7 @@ import { useDesktopStore } from "@/stores/desktop.store";
 import appIcons from "@/assets/icons/apps";
 
 export default function AppNavigator() {
-  const { navApps, setNavApps, windows, setWindows, setActiveWindowId } = useDesktopStore();
+  const { navApps, setNavApps, windows, setWindows, setActiveWindowId, navigatorOrientation } = useDesktopStore();
   const trashRef = useRef<HTMLDivElement>(null);
   const [draggedItemNearTrash, setDraggedItemNearTrash] = useState<string | null>(null);
   const [draggingItemId, setDraggingItemId] = useState<string | null>(null);
@@ -73,9 +73,12 @@ export default function AppNavigator() {
     }
   };
 
+  const isVertical = navigatorOrientation === 'left' || navigatorOrientation === 'right';
+  const dragAxis = isVertical ? 'y' : 'x';
+
   return (
-    <nav className="app-navigator">
-      <Reorder.Group as="div" axis="x" values={navApps} onReorder={setNavApps} className="app-list">
+    <nav className={`app-navigator app-navigator--${navigatorOrientation}`}>
+      <Reorder.Group as="div" axis={dragAxis} values={navApps} onReorder={setNavApps} className="app-list">
         <AnimatePresence mode="popLayout">
           {navApps.map((app) => {
             const icon = appIcons[app.id as keyof typeof appIcons];

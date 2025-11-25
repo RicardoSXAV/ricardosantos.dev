@@ -11,7 +11,7 @@ export function useWindowBehavior(
   onSizeChange: (id: string, size: { width: number; height: number }) => void,
   onFocus: () => void
 ) {
-  const { windows, setWindows } = useDesktopStore();
+  const { windows, setWindows, navigatorOrientation } = useDesktopStore();
   
   // Refs and state
   const windowRef = useRef<HTMLDivElement>(null);
@@ -46,7 +46,7 @@ export function useWindowBehavior(
     const findAppIconPosition = () => {
       const appId = desktopWindow.appId;
       const appElement = document.querySelector(`[data-app-id="${appId}"]`);
-      
+
       if (appElement) {
         const rect = appElement.getBoundingClientRect();
         setMinimizeTarget({
@@ -54,20 +54,21 @@ export function useWindowBehavior(
           y: rect.top + rect.height / 2
         });
       } else {
+        // Fallback: center of screen
         setMinimizeTarget({
           x: window.innerWidth / 2,
-          y: window.innerHeight - 40
+          y: window.innerHeight / 2
         });
       }
     };
 
     findAppIconPosition();
     window.addEventListener('resize', findAppIconPosition);
-    
+
     return () => {
       window.removeEventListener('resize', findAppIconPosition);
     };
-  }, [desktopWindow.appId]);
+  }, [desktopWindow.appId, navigatorOrientation]);
 
   // Update constraints when window size changes
   const updateConstraints = useCallback(() => {
