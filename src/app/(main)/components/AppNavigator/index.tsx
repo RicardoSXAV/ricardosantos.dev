@@ -172,8 +172,12 @@ export default function AppNavigator() {
         data-app-id="trash"
         role="button"
         tabIndex={0}
+        layoutId="trash"
         whileHover={{ scale: 1.05 }}
         animate={{ opacity: 1 }}
+        transition={{
+          layout: { type: "spring", stiffness: 300, damping: 30 }
+        }}
         onClick={handleTrashClick}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {

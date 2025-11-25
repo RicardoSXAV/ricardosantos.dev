@@ -21,6 +21,11 @@
     "portuguese": "Portuguese"
   },
   "appearance": {
+    "theme": "Theme",
+    "themeMode": "App theme",
+    "themeModeDescription": "Choose between a light or dark experience",
+    "themeLight": "Light",
+    "themeDark": "Dark",
     "navigation": "Navigation",
     "navigationOrientation": "App Navigator Orientation",
     "navigationOrientationDescription": "Choose where the app navigator appears on your screen",

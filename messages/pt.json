@@ -21,6 +21,11 @@
     "portuguese": "Português"
   },
   "appearance": {
+    "theme": "Tema",
+    "themeMode": "Tema do app",
+    "themeModeDescription": "Escolha entre uma experiência clara ou escura",
+    "themeLight": "Claro",
+    "themeDark": "Escuro",
     "navigation": "Navegação",
     "navigationOrientation": "Orientação do Navegador de Aplicativos",
     "navigationOrientationDescription": "Escolha onde o navegador de aplicativos aparece na sua tela",
