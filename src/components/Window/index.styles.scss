@@ -1,10 +1,10 @@
 .window {
   position: absolute;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--surface-window);
   backdrop-filter: blur(12px);
-  border-radius: 10px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-glass);
   min-width: 200px;
   min-height: 150px;
   overflow: hidden;
@@ -16,13 +16,13 @@
   -webkit-backface-visibility: hidden;
 
   &.active {
-    box-shadow: 0 12px 48px 0 rgba(31, 38, 135, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-glass);
   }
 
   &.dragging {
     opacity: 0.95;
-    box-shadow: 0 16px 56px 0 rgba(31, 38, 135, 0.3);
+    box-shadow: var(--shadow-lg);
     cursor: grabbing;
   }
 
@@ -35,7 +35,7 @@
     visibility: visible;
     opacity: 0;
     transform-origin: center center;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--shadow-lg);
   }
 
   .window-header {
@@ -43,8 +43,8 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--space-md) var(--space-lg);
-    background: rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    background: var(--surface-window-header);
+    border-bottom: 1px solid var(--border-glass);
     user-select: none;
 
     .window-title {
@@ -53,7 +53,7 @@
       gap: var(--space-md);
       font-size: 14px;
       font-weight: 500;
-      color: var(--grey-800);
+      color: var(--color-text-secondary);
 
       .window-icon {
         border-radius: 4px;
@@ -90,7 +90,6 @@
   }
 
   .window-content {
-    padding: var(--space-lg);
     height: calc(100% - 40px);
     overflow: auto;
   }
@@ -165,7 +164,7 @@
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--surface-window-header);
     }
   }
 }

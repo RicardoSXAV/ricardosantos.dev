@@ -1,0 +1,45 @@
+{
+  "settings": {
+    "title": "Settings",
+    "search": "Search",
+    "general": "General",
+    "languageAndRegion": "Language and Region",
+    "appearance": "Appearance",
+    "generalDescription": "Manage general configurations and preferences, including language, app navigator location, and theme settings.",
+    "languageAndRegionDescription": "Configure your preferred language and regional settings for the application.",
+    "appearanceDescription": "Customize the visual appearance and theme of your application.",
+    "version": "Version",
+    "appearanceComingSoon": "Appearance settings coming soon..."
+  },
+  "languageAndRegion": {
+    "title": "Language and Region",
+    "description": "Configure your preferred language and regional settings for the application.",
+    "language": "Language",
+    "preferredLanguage": "Preferred Language",
+    "selectLanguage": "Select the language for the application interface",
+    "english": "English",
+    "portuguese": "Portuguese"
+  },
+  "appearance": {
+    "theme": "Theme",
+    "themeMode": "App theme",
+    "themeModeDescription": "Choose between a light or dark experience",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "navigation": "Navigation",
+    "navigationOrientation": "App Navigator Orientation",
+    "navigationOrientationDescription": "Choose where the app navigator appears on your screen",
+    "navigationBottom": "Bottom",
+    "navigationTop": "Top",
+    "navigationLeft": "Left",
+    "navigationRight": "Right"
+  },
+  "trash": {
+    "title": "Trash",
+    "description": "Apps removed from the navigator stay here so you can restore them whenever you want.",
+    "emptyTitle": "Trash is empty",
+    "emptyDescription": "Drag an app onto the trash icon to remove it from the navigator.",
+    "restore": "Restore",
+    "restoreAll": "Restore all"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "settings": {
+    "title": "Configurações",
+    "search": "Buscar",
+    "general": "Geral",
+    "languageAndRegion": "Idioma e Região",
+    "appearance": "Aparência",
+    "generalDescription": "Gerencie configurações gerais e preferências, incluindo idioma, localização do navegador de aplicativos e configurações de tema.",
+    "languageAndRegionDescription": "Configure seu idioma preferido e configurações regionais para a aplicação.",
+    "appearanceDescription": "Personalize a aparência visual e o tema da sua aplicação.",
+    "version": "Versão",
+    "appearanceComingSoon": "Configurações de aparência em breve..."
+  },
+  "languageAndRegion": {
+    "title": "Idioma e Região",
+    "description": "Configure seu idioma preferido e configurações regionais para a aplicação.",
+    "language": "Idioma",
+    "preferredLanguage": "Idioma Preferido",
+    "selectLanguage": "Selecione o idioma para a interface da aplicação",
+    "english": "Inglês",
+    "portuguese": "Português"
+  },
+  "appearance": {
+    "theme": "Tema",
+    "themeMode": "Tema do app",
+    "themeModeDescription": "Escolha entre uma experiência clara ou escura",
+    "themeLight": "Claro",
+    "themeDark": "Escuro",
+    "navigation": "Navegação",
+    "navigationOrientation": "Orientação do Navegador de Aplicativos",
+    "navigationOrientationDescription": "Escolha onde o navegador de aplicativos aparece na sua tela",
+    "navigationBottom": "Inferior",
+    "navigationTop": "Superior",
+    "navigationLeft": "Esquerda",
+    "navigationRight": "Direita"
+  },
+  "trash": {
+    "title": "Lixeira",
+    "description": "Os apps removidos do navegador ficam aqui para você restaurá-los quando quiser.",
+    "emptyTitle": "Lixeira vazia",
+    "emptyDescription": "Arraste um app para o ícone da lixeira para removê-lo do navegador.",
+    "restore": "Restaurar",
+    "restoreAll": "Restaurar todos"
+  }
+}

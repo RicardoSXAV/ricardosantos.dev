@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useDragControls } from "framer-motion";
 import appIcons from "@/assets/icons/apps";
 import { useDesktopStore } from "@/stores/desktop.store";
+import { STATIC_APP_NAMES } from "@/stores/data/desktop.data";
 
 interface WindowHeaderProps {
   appId: string;
@@ -20,7 +21,9 @@ export default function WindowHeader({
   onMaximize,
 }: WindowHeaderProps) {
   const { navApps } = useDesktopStore();
-  const appName = navApps.find((app) => app.id === appId)?.name;
+  const appName =
+    navApps.find((app) => app.id === appId)?.name ||
+    STATIC_APP_NAMES[appId] || 'Unknown';
 
   return (
     <div
