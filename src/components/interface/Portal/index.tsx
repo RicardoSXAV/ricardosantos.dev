@@ -16,7 +16,6 @@ export default function Portal({ children, position, className }: PortalProps) {
   const portalRoot = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Try to find existing portal root or create one
     let root = document.getElementById("portal-root") as HTMLDivElement;
     if (!root) {
       root = document.createElement("div");
@@ -26,7 +25,6 @@ export default function Portal({ children, position, className }: PortalProps) {
     portalRoot.current = root;
 
     return () => {
-      // Cleanup: remove portal root if empty
       if (root && root.children.length === 0) {
         root.remove();
       }
