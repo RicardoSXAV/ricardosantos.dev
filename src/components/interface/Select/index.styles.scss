@@ -67,17 +67,16 @@
 }
 
 .select-dropdown {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
   background: var(--surface-panel);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
-  z-index: 1000;
   overflow: hidden;
   animation: slideDown 0.15s ease;
+}
+
+.select-dropdown-portal {
+  z-index: 10000;
 }
 
 @keyframes slideDown {

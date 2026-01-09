@@ -27,8 +27,7 @@
     .app-item {
       .minimized-indicator {
         bottom: -8px;
-        left: 50%;
-        transform: translateX(-50%);
+        left: calc(50% - 2.5px);
       }
     }
   }
@@ -50,8 +49,7 @@
     .app-item {
       .minimized-indicator {
         top: -8px;
-        left: 50%;
-        transform: translateX(-50%);
+        left: calc(50% - 2.5px);
       }
     }
   }
@@ -73,8 +71,7 @@
     .app-item {
       .minimized-indicator {
         left: -8px;
-        top: 50%;
-        transform: translateY(-50%);
+        top: calc(50% - 2.5px);
       }
     }
   }
@@ -96,8 +93,7 @@
     .app-item {
       .minimized-indicator {
         right: -8px;
-        top: 50%;
-        transform: translateY(-50%);
+        top: calc(50% - 2.5px);
       }
     }
   }
