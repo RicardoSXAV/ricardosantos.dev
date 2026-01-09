@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Portal from "../Portal";
 import "./index.styles.scss";
 
 export interface SelectOption {
@@ -16,6 +17,11 @@ interface SelectProps {
   disabled?: boolean;
 }
 
+interface DropdownPosition {
+  top: number;
+  left: number;
+}
+
 export default function Select({
   options,
   value,
@@ -24,15 +30,46 @@ export default function Select({
   disabled = false,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
+    top: 0,
+    left: 0,
+  });
   const selectRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = options.find((opt) => opt.value === value);
 
+  // Calculate dropdown position when opened or window resized
+  useEffect(() => {
+    if (!isOpen || !selectRef.current) return;
+
+    const calculatePosition = () => {
+      const triggerRect = selectRef.current!.getBoundingClientRect();
+      const newPosition: DropdownPosition = {
+        top: triggerRect.bottom + 4, // 4px gap below trigger
+        left: triggerRect.left,
+      };
+      setDropdownPosition(newPosition);
+    };
+
+    calculatePosition();
+    window.addEventListener("resize", calculatePosition);
+    window.addEventListener("scroll", calculatePosition, true);
+
+    return () => {
+      window.removeEventListener("resize", calculatePosition);
+      window.removeEventListener("scroll", calculatePosition, true);
+    };
+  }, [isOpen]);
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
       if (
         selectRef.current &&
-        !selectRef.current.contains(event.target as Node)
+        !selectRef.current.contains(target) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target)
       ) {
         setIsOpen(false);
       }
@@ -92,25 +129,33 @@ export default function Select({
       </button>
 
       {isOpen && (
-        <div className="select-dropdown">
-          <div className="select-options">
-            {options.map((option) => (
-              <button
-                key={option.value}
-                className={`select-option ${
-                  value === option.value ? "selected" : ""
-                }`}
-                onClick={() => handleSelect(option.value)}
-                type="button"
-              >
-                <span className="option-label">{option.label}</span>
-                {value === option.value && (
-                  <span className="option-check">✓</span>
-                )}
-              </button>
-            ))}
+        <Portal
+          position={dropdownPosition}
+          className="select-dropdown-portal"
+        >
+          <div
+            className="select-dropdown"
+            ref={dropdownRef}
+            style={{
+              width: selectRef.current?.offsetWidth,
+            }}
+          >
+            <div className="select-options">
+              {options.map((option) => (
+                <button
+                  key={option.value}
+                  className={`select-option ${
+                    value === option.value ? "selected" : ""
+                  }`}
+                  onClick={() => handleSelect(option.value)}
+                  type="button"
+                >
+                  <span className="option-label">{option.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        </Portal>
       )}
     </div>
   );
