@@ -26,6 +26,8 @@
     "themeModeDescription": "Choose between a light or dark experience",
     "themeLight": "Light",
     "themeDark": "Dark",
+    "backgroundImage": "Background Image",
+    "backgroundImageDescription": "Select a custom background image for the application",
     "navigation": "Navigation",
     "navigationOrientation": "App Navigator Orientation",
     "navigationOrientationDescription": "Choose where the app navigator appears on your screen",

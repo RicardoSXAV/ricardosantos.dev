@@ -7,6 +7,7 @@ import {
   NavigatorOrientation,
   ThemeVariant,
 } from "@/stores/desktop.store";
+import BackgroundImageSelector from "./BackgroundImageSelector";
 
 export default function AppearanceSection() {
   const { t } = useTranslation();
@@ -56,6 +57,15 @@ export default function AppearanceSection() {
               value={theme}
               onChange={handleThemeChange}
             />
+          </div>
+        </div>
+        <div className="section-item">
+          <div className="item-info">
+            <T k="appearance.backgroundImage" as="label" className="item-label" />
+            <T k="appearance.backgroundImageDescription" as="p" className="item-description" />
+          </div>
+          <div className="item-control">
+            <BackgroundImageSelector />
           </div>
         </div>
       </div>
