@@ -3,6 +3,7 @@
 import { useState } from "react";
 import "./index.styles.scss";
 import Image from "next/image";
+import Button from "@/components/interface/Button";
 
 import searchIcon from "@/assets/icons/interface/lu-search.svg";
 import LanguageSection from "./components/LanguageSection";
@@ -62,16 +63,17 @@ export default function SettingsContent() {
 
         <div className="settings-nav">
           {settingsCategories.map((category) => (
-            <button
+            <Button
               key={category.id}
-              className={`settings-nav-item ${
-                selectedCategory === category.id ? "active" : ""
-              }`}
+              variant="ghost"
+              active={selectedCategory === category.id}
               onClick={() => setSelectedCategory(category.id)}
+              icon={category.icon}
+              className="settings-nav-button"
+              fullWidth
             >
-              <span className="nav-icon">{category.icon}</span>
-              <T k={category.labelKey} as="span" className="nav-label" />
-            </button>
+              <T k={category.labelKey} />
+            </Button>
           ))}
         </div>
       </div>

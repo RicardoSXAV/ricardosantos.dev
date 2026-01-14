@@ -19,15 +19,25 @@ export default function AppearanceSection() {
   } = useDesktopStore();
 
   const themeOptions: SelectOption[] = [
-    { value: "light", label: t("appearance.themeLight") },
-    { value: "dark", label: t("appearance.themeDark") },
+    { 
+      value: "light", 
+      label: t("appearance.themeLight"),
+      description: "Clean and bright interface",
+      icon: "☀️" 
+    },
+    { 
+      value: "dark", 
+      label: t("appearance.themeDark"),
+      description: "Easy on the eyes in low light",
+      icon: "🌙" 
+    },
   ];
 
   const navigationOrientationOptions: SelectOption[] = [
-    { value: "bottom", label: t("appearance.navigationBottom") },
-    { value: "top", label: t("appearance.navigationTop") },
-    { value: "left", label: t("appearance.navigationLeft") },
-    { value: "right", label: t("appearance.navigationRight") },
+    { value: "bottom", label: t("appearance.navigationBottom"), icon: "⬇️" },
+    { value: "top", label: t("appearance.navigationTop"), icon: "⬆️" },
+    { value: "left", label: t("appearance.navigationLeft"), icon: "⬅️" },
+    { value: "right", label: t("appearance.navigationRight"), icon: "➡️" },
   ];
 
   const handleNavigationOrientationChange = (newOrientation: string) => {
@@ -56,6 +66,7 @@ export default function AppearanceSection() {
               options={themeOptions}
               value={theme}
               onChange={handleThemeChange}
+              variant="primary"
             />
           </div>
         </div>
@@ -81,6 +92,7 @@ export default function AppearanceSection() {
               options={navigationOrientationOptions}
               value={navigatorOrientation}
               onChange={handleNavigationOrientationChange}
+              variant="primary"
             />
           </div>
         </div>

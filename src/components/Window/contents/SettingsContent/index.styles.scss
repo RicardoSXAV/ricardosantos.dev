@@ -54,44 +54,8 @@
   gap: 2px;
 }
 
-.settings-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-sm);
-  color: var(--color-text-primary);
-  font-size: 13px;
-  cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
-  text-align: left;
-
-  .nav-icon {
-    font-size: 16px;
-    width: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .nav-label {
-    flex: 1;
-  }
-
-  &:hover {
-    background: var(--surface-pill);
-  }
-
-  &.active {
-    background: var(--accent-primary);
-    color: var(--color-text-inverse);
-
-    &:hover {
-      background: var(--accent-primary-strong);
-    }
-  }
+.settings-nav-button {
+  width: 100%;
 }
 
 .settings-panel {

@@ -2,11 +2,14 @@
 
 import { useState, useRef, useEffect } from "react";
 import Portal from "../Portal";
+import { AnimatePresence, motion } from "framer-motion";
 import "./index.styles.scss";
 
 export interface SelectOption {
   value: string;
   label: string;
+  description?: string;
+  icon?: React.ReactNode;
 }
 
 interface SelectProps {
@@ -15,11 +18,14 @@ interface SelectProps {
   onChange: (value: string) => void;
   placeholder?: string;
   disabled?: boolean;
+  variant?: "primary" | "outline";
+  fullWidth?: boolean;
 }
 
 interface DropdownPosition {
   top: number;
   left: number;
+  maxHeight?: number;
 }
 
 export default function Select({
@@ -28,6 +34,8 @@ export default function Select({
   onChange,
   placeholder = "Select an option",
   disabled = false,
+  variant = "primary",
+  fullWidth = false,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
@@ -45,20 +53,33 @@ export default function Select({
 
     const calculatePosition = () => {
       const triggerRect = selectRef.current!.getBoundingClientRect();
-      const newPosition: DropdownPosition = {
-        top: triggerRect.bottom + 4, // 4px gap below trigger
+      const windowHeight = window.innerHeight;
+      const spaceBelow = windowHeight - triggerRect.bottom - 20;
+
+      setDropdownPosition({
+        top: triggerRect.bottom + 8,
         left: triggerRect.left,
-      };
-      setDropdownPosition(newPosition);
+        maxHeight: spaceBelow > 150 ? spaceBelow : 300,
+      });
     };
 
-    calculatePosition();
-    window.addEventListener("resize", calculatePosition);
-    window.addEventListener("scroll", calculatePosition, true);
+    const handleScroll = (event: Event) => {
+      // If the scroll happened inside our dropdown, don't close it!
+      if (dropdownRef.current?.contains(event.target as Node)) {
+        return;
+      }
+      setIsOpen(false);
+    };
+
+    if (isOpen) {
+      calculatePosition();
+      window.addEventListener("resize", calculatePosition);
+      window.addEventListener("scroll", handleScroll, true);
+    }
 
     return () => {
       window.removeEventListener("resize", calculatePosition);
-      window.removeEventListener("scroll", calculatePosition, true);
+      window.removeEventListener("scroll", handleScroll, true);
     };
   }, [isOpen]);
 
@@ -97,7 +118,7 @@ export default function Select({
 
   return (
     <div
-      className={`select-container ${disabled ? "disabled" : ""}`}
+      className={`select-container select-variant-${variant} ${disabled ? "disabled" : ""} ${fullWidth ? "full-width" : ""}`}
       ref={selectRef}
     >
       <button
@@ -128,35 +149,77 @@ export default function Select({
         </span>
       </button>
 
-      {isOpen && (
-        <Portal
-          position={dropdownPosition}
-          className="select-dropdown-portal"
-        >
-          <div
-            className="select-dropdown"
-            ref={dropdownRef}
-            style={{
-              width: selectRef.current?.offsetWidth,
-            }}
+      <AnimatePresence>
+        {isOpen && (
+          <Portal
+            position={dropdownPosition}
+            className="select-dropdown-portal"
           >
-            <div className="select-options">
-              {options.map((option) => (
-                <button
-                  key={option.value}
-                  className={`select-option ${
-                    value === option.value ? "selected" : ""
-                  }`}
-                  onClick={() => handleSelect(option.value)}
-                  type="button"
-                >
-                  <span className="option-label">{option.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </Portal>
-      )}
+            <motion.div
+              className="select-dropdown"
+              ref={dropdownRef}
+              initial={{ opacity: 0, scale: 0.95, y: -10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -10 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                width: "max-content",
+                minWidth: selectRef.current?.offsetWidth,
+                maxWidth: "400px",
+                maxHeight: dropdownPosition.maxHeight,
+              }}
+            >
+              <div className="select-options">
+                {options.map((option) => (
+                  <button
+                    key={option.value}
+                    className={`select-option ${
+                      value === option.value ? "selected" : ""
+                    }`}
+                    onClick={() => handleSelect(option.value)}
+                    type="button"
+                  >
+                    <div className="option-main">
+                      {option.icon && (
+                        <div className="option-icon-container">
+                          {option.icon}
+                        </div>
+                      )}
+                      <div className="option-text">
+                        <span className="option-label">{option.label}</span>
+                        {option.description && (
+                          <span className="option-description">
+                            {option.description}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    {value === option.value && (
+                      <span className="option-check">
+                        <svg
+                          width="12"
+                          height="10"
+                          viewBox="0 0 12 10"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M1 5.2L4.2 8.4L11 1.6"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </Portal>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
