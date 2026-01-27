@@ -10,13 +10,30 @@
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
   --radius-full: 9999px;
 
-  /* Button Tokens */
-  --btn-primary-bg: #2b6eff;
-  --btn-primary-hover: #1e5ade;
-  --btn-primary-text: #ffffff;
-  --btn-primary-glow: rgba(43, 110, 255, 0.45);
+  /* Theme Tokens */
+  --theme-primary: #2b6eff;
+  --theme-primary-hover: #1e5ade;
+  --theme-primary-text: #ffffff;
+  --theme-primary-glow: rgba(43, 110, 255, 0.45);
+  --theme-primary-soft: rgba(43, 110, 255, 0.1);
+  --theme-primary-soft-mid: rgba(43, 110, 255, 0.15);
+  --theme-primary-soft-hover: rgba(43, 110, 255, 0.2);
+  --theme-primary-soft-strong: rgba(43, 110, 255, 0.25);
+
+  --orange: #ff9f0f;
+  --yellow: #fdf17e;
+  --purple: #9b51e0;
+
+  --gradient-aurora: linear-gradient(135deg, #2b6eff 0%, #fdf17e 50%, #9b51e0 100%);
+  --gradient-aurora-soft: 
+    radial-gradient(at 0% 0%, rgba(43, 110, 255, 0.3) 0%, transparent 70%),
+    radial-gradient(at 100% 100%, rgba(155, 81, 224, 0.3) 0%, transparent 70%),
+    radial-gradient(at 50% 50%, rgba(253, 241, 126, 0.15) 0%, transparent 60%),
+    linear-gradient(135deg, rgba(13, 17, 23, 0.8) 0%, rgba(30, 41, 59, 0.7) 100%);
 
   /* Shadows */
   --shadow-sm: 0 8px 20px rgba(15, 23, 42, 0.15);

@@ -34,7 +34,12 @@
     "navigationBottom": "Bottom",
     "navigationTop": "Top",
     "navigationLeft": "Left",
-    "navigationRight": "Right"
+    "navigationRight": "Right",
+    "windowStyle": "Window Style",
+    "windowGradient": "Window Gradient",
+    "windowGradientDescription": "Customize the background gradient of system windows",
+    "gradientDefault": "Default",
+    "gradientAurora": "Aurora"
   },
   "trash": {
     "title": "Trash",

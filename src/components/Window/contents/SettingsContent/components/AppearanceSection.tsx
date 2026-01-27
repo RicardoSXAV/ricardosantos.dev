@@ -23,7 +23,22 @@ export default function AppearanceSection() {
     setNavigatorOrientation,
     theme,
     setTheme,
+    windowGradient,
+    setWindowGradient,
   } = useDesktopStore();
+
+  const windowGradientOptions: SelectOption[] = [
+    { 
+      value: "default", 
+      label: t("appearance.gradientDefault"),
+      description: "Standard subtle gradient",
+    },
+    { 
+      value: "aurora", 
+      label: t("appearance.gradientAurora"),
+      description: "Blue, yellow and purple ambient glow",
+    },
+  ];
 
   const themeOptions: SelectOption[] = [
     { 
@@ -100,6 +115,23 @@ export default function AppearanceSection() {
           </div>
           <div className="item-control">
             <BackgroundImageSelector />
+          </div>
+        </div>
+      </div>
+      <div className="section-group">
+        <T k="appearance.windowStyle" as="h3" className="section-title" />
+        <div className="section-item">
+          <div className="item-info">
+            <T k="appearance.windowGradient" as="label" className="item-label" />
+            <T k="appearance.windowGradientDescription" as="p" className="item-description" />
+          </div>
+          <div className="item-control">
+            <Select
+              options={windowGradientOptions}
+              value={windowGradient}
+              onChange={setWindowGradient}
+              variant="primary"
+            />
           </div>
         </div>
       </div>
