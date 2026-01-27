@@ -5,6 +5,7 @@ import "./index.styles.scss";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost";
+  size?: "sm" | "md" | "lg";
   icon?: React.ReactNode;
   active?: boolean;
   fullWidth?: boolean;
@@ -13,6 +14,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Button: React.FC<ButtonProps> = ({
   children,
   variant = "primary",
+  size = "md",
   icon,
   className = "",
   active = false,
@@ -21,7 +23,7 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`btn btn-${variant} ${active ? "active" : ""} ${className} ${fullWidth ? "full-width" : ""}`}
+      className={`btn btn-${variant} btn-size-${size} ${active ? "active" : ""} ${className} ${fullWidth ? "full-width" : ""}`}
       {...props}
     >
       {icon && <span className="btn-icon">{icon}</span>}

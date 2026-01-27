@@ -5,7 +5,6 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-md);
-  padding: var(--space-md) var(--space-xl);
   border: none;
   border-radius: var(--radius-full);
   font-size: 14px;
@@ -14,6 +13,24 @@
   transition: all var(--transition-normal);
   user-select: none;
   width: fit-content;
+
+  &.btn-size-sm {
+    height: 32px;
+    padding: 0 var(--space-lg);
+    font-size: 13px;
+  }
+
+  &.btn-size-md {
+    height: 40px;
+    padding: 0 var(--space-xl);
+    font-size: 14px;
+  }
+
+  &.btn-size-lg {
+    height: 48px;
+    padding: 0 var(--space-2xl);
+    font-size: 15px;
+  }
 
   .btn-icon {
     display: flex;
@@ -33,19 +50,24 @@
   }
 
   &.btn-primary {
-    background: var(--btn-primary-bg);
-    color: var(--btn-primary-text);
-    box-shadow: 0 4px 12px var(--btn-primary-glow);
+    background: var(--theme-primary);
+    color: var(--theme-primary-text);
+    box-shadow: 0 4px 12px var(--theme-primary-glow);
 
     &:hover:not(:disabled) {
-      background: var(--btn-primary-hover);
+      background: var(--theme-primary-hover);
       transform: translateY(-1px);
-      box-shadow: 0 6px 16px var(--btn-primary-glow);
+      box-shadow: 0 6px 16px var(--theme-primary-glow);
     }
 
     &:active:not(:disabled) {
       transform: translateY(0);
-      background: var(--btn-primary-bg);
+      background: var(--theme-primary);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-app-bg), 0 0 0 4px var(--theme-primary);
     }
   }
 
@@ -58,13 +80,22 @@
     }
 
     &.active {
-      background: var(--btn-primary-bg);
-      color: var(--btn-primary-text);
-      box-shadow: 0 4px 12px var(--btn-primary-glow);
+      background: var(--theme-primary);
+      color: var(--theme-primary-text);
+      box-shadow: 0 4px 12px var(--theme-primary-glow);
 
       &:hover:not(:disabled) {
-        background: var(--btn-primary-hover);
+        background: var(--theme-primary-hover);
       }
+    }
+
+    &:focus-visible {
+      outline: none;
+      background: var(--surface-pill);
+    }
+
+    &.active:focus-visible {
+      background: var(--theme-primary);
     }
   }
 

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Portal from "../Portal";
 import { AnimatePresence, motion } from "framer-motion";
 import "./index.styles.scss";
+import { useDesktopStore } from "@/stores/desktop.store";
 
 export interface SelectOption {
   value: string;
@@ -20,6 +21,7 @@ interface SelectProps {
   disabled?: boolean;
   variant?: "primary" | "outline";
   fullWidth?: boolean;
+  size?: "sm" | "md" | "lg";
 }
 
 interface DropdownPosition {
@@ -36,14 +38,18 @@ export default function Select({
   disabled = false,
   variant = "primary",
   fullWidth = false,
+  size = "md"
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
     top: 0,
     left: 0,
   });
   const selectRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const theme = useDesktopStore((state) => state.theme);
 
   const selectedOption = options.find((opt) => opt.value === value);
 
@@ -105,6 +111,41 @@ export default function Select({
     };
   }, [isOpen]);
 
+  // Sync focused index with selected value when opening
+  useEffect(() => {
+    if (isOpen) {
+      const activeIndex = options.findIndex((opt) => opt.value === value);
+      setFocusedIndex(activeIndex >= 0 ? activeIndex : 0);
+    } else {
+      setFocusedIndex(-1);
+    }
+  }, [isOpen, options, value]);
+
+  // Scroll focused option into view
+  useEffect(() => {
+    if (isOpen && focusedIndex >= 0 && dropdownRef.current) {
+      const optionsContainer = dropdownRef.current.querySelector(
+        ".select-options",
+      );
+      const focusedOption = optionsContainer?.children[
+        focusedIndex
+      ] as HTMLElement;
+
+      if (focusedOption && optionsContainer) {
+        const containerRect = optionsContainer.getBoundingClientRect();
+        const optionRect = focusedOption.getBoundingClientRect();
+
+        if (optionRect.bottom > containerRect.bottom) {
+          optionsContainer.scrollTop +=
+            optionRect.bottom - containerRect.bottom + 8; // +8 for padding
+        } else if (optionRect.top < containerRect.top) {
+          optionsContainer.scrollTop -=
+            containerRect.top - optionRect.top + 8; // +8 for padding
+        }
+      }
+    }
+  }, [focusedIndex, isOpen]);
+
   const handleToggle = () => {
     if (!disabled) {
       setIsOpen(!isOpen);
@@ -116,14 +157,57 @@ export default function Select({
     setIsOpen(false);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (disabled) return;
+
+    if (!isOpen) {
+      if (
+        e.key === "ArrowDown" ||
+        e.key === "ArrowUp" ||
+        e.key === "Enter" ||
+        e.key === " "
+      ) {
+        e.preventDefault();
+        setIsOpen(true);
+      }
+      return;
+    }
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setFocusedIndex((prev) => (prev + 1) % options.length);
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setFocusedIndex((prev) => (prev - 1 + options.length) % options.length);
+        break;
+      case "Enter":
+      case " ":
+        e.preventDefault();
+        if (focusedIndex >= 0) {
+          handleSelect(options[focusedIndex].value);
+        }
+        break;
+      case "Escape":
+        e.preventDefault();
+        setIsOpen(false);
+        break;
+      case "Tab":
+        setIsOpen(false);
+        break;
+    }
+  };
+
   return (
     <div
-      className={`select-container select-variant-${variant} ${disabled ? "disabled" : ""} ${fullWidth ? "full-width" : ""}`}
+      className={`select-container select-variant-${variant} select-theme-${theme} select-size-${size} ${disabled ? "disabled" : ""} ${fullWidth ? "full-width" : ""}`}
       ref={selectRef}
     >
       <button
         className={`select-trigger ${isOpen ? "open" : ""}`}
         onClick={handleToggle}
+        onKeyDown={handleKeyDown}
         disabled={disabled}
         type="button"
       >
@@ -156,7 +240,7 @@ export default function Select({
             className="select-dropdown-portal"
           >
             <motion.div
-              className="select-dropdown"
+              className={`select-dropdown select-theme-${theme}`}
               ref={dropdownRef}
               initial={{ opacity: 0, scale: 0.95, y: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -170,13 +254,16 @@ export default function Select({
               }}
             >
               <div className="select-options">
-                {options.map((option) => (
+                {options.map((option, index) => (
                   <button
                     key={option.value}
                     className={`select-option ${
                       value === option.value ? "selected" : ""
+                    } ${focusedIndex === index ? "focused" : ""} ${
+                      option.description ? "has-description" : ""
                     }`}
                     onClick={() => handleSelect(option.value)}
+                    onMouseEnter={() => setFocusedIndex(index)}
                     type="button"
                   >
                     <div className="option-main">
@@ -194,7 +281,7 @@ export default function Select({
                         )}
                       </div>
                     </div>
-                    {value === option.value && (
+                    {/* {value === option.value && (
                       <span className="option-check">
                         <svg
                           width="12"
@@ -212,7 +299,7 @@ export default function Select({
                           />
                         </svg>
                       </span>
-                    )}
+                    )} */}
                   </button>
                 ))}
               </div>

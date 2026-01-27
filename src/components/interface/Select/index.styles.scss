@@ -16,30 +16,79 @@
     max-width: none;
   }
 
+  &.select-size-sm {
+    .select-trigger {
+      height: 32px;
+      padding: 0 var(--space-lg);
+      font-size: 13px;
+    }
+  }
+
+  &.select-size-md {
+    .select-trigger {
+      height: 40px;
+      padding: 0 var(--space-xl);
+      font-size: 14px;
+    }
+  }
+
+  &.select-size-lg {
+    .select-trigger {
+      height: 48px;
+      padding: 0 var(--space-2xl);
+      font-size: 15px;
+    }
+  }
+
+  // Light Theme (Container & Trigger)
+  &.select-theme-light {
+    &.select-variant-primary {
+      .select-trigger {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        color: #0f172a;
+
+        &:hover {
+          background: #f8fafc;
+          border-color: var(--theme-primary);
+        }
+
+        &.open,
+        &:focus-visible {
+          border-color: var(--theme-primary);
+          box-shadow: 0 0 0 1px var(--theme-primary), 0 0 12px var(--theme-primary-soft-strong);
+        }
+      }
+
+      .select-arrow {
+        color: var(--theme-primary);
+      }
+    }
+  }
+
   &.select-variant-primary {
     .select-trigger {
       background: #0d1117;
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: var(--radius-full);
-      padding: 10px 20px;
       color: #ffffff;
       transition: all var(--transition-normal);
 
       &:hover {
         background: #161b22;
-        border-color: var(--btn-primary-bg);
+        border-color: var(--theme-primary);
       }
 
       &.open,
       &:focus-visible {
-        border-color: var(--btn-primary-bg);
-        box-shadow: 0 0 0 1px var(--btn-primary-bg), 0 0 12px var(--btn-primary-glow);
+        border-color: var(--theme-primary);
+        box-shadow: 0 0 0 1px var(--theme-primary), 0 0 12px var(--theme-primary-glow);
         outline: none;
       }
     }
 
     .select-arrow {
-      color: var(--btn-primary-bg);
+      color: var(--theme-primary);
     }
   }
 
@@ -48,7 +97,6 @@
       background: var(--surface-control);
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-md);
-      padding: 8px 12px;
       color: var(--color-text-primary);
 
       &:hover {
@@ -106,12 +154,68 @@
   background: rgba(13, 17, 23, 0.95);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-2xl);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   margin-top: 8px;
+
+  &.select-theme-light {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0,0,0,0.02);
+
+    .select-options {
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    .select-option {
+      color: var(--color-text-secondary);
+
+      &:hover,
+      &.focused {
+        background: var(--surface-pill);
+        
+        .option-icon-container {
+            background: rgba(0, 0, 0, 0.06);
+        }
+      }
+
+      .option-icon-container {
+        background: rgba(0, 0, 0, 0.04);
+        color: var(--color-text-muted);
+      }
+      
+      .option-text {
+          .option-description {
+              color: var(--color-text-muted);
+          }
+      }
+
+      &.selected {
+        background: var(--theme-primary-soft);
+        color: var(--color-text-primary);
+
+        .option-icon-container {
+          background: var(--theme-primary-soft-hover);
+          color: var(--theme-primary);
+        }
+        
+          .option-text {
+              .option-label {
+                  color: var(--theme-primary);
+                  font-weight: 600;
+              }
+              .option-description {
+                  color: var(--color-text-secondary);
+              }
+          }
+      }
+    }
+  }
 }
 
 .select-dropdown-portal {
@@ -141,16 +245,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 12px;
+  padding: 8px 12px;
   background: transparent;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   color: #f4f4f5;
   cursor: pointer;
   transition: all var(--transition-fast);
   outline: none;
   width: 100%;
   gap: 16px;
+
+  &.has-description {
+    padding: 10px 12px;
+
+    .option-icon-container {
+      width: 32px;
+      height: 32px;
+    }
+  }
 
   .option-main {
     display: flex;
@@ -161,14 +274,14 @@
   }
 
   .option-icon-container {
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 14px;
     flex-shrink: 0;
     transition: all var(--transition-fast);
   }
@@ -181,6 +294,7 @@
     overflow: hidden;
     flex: 1;
     min-width: 0; // Allow shrinking for ellipsis
+    padding-right: 6px;
   }
 
   .option-label {
@@ -189,7 +303,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%;
   }
 
   .option-description {
@@ -198,18 +311,18 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%;
   }
 
   .option-check {
-    color: var(--btn-primary-bg);
+    color: var(--theme-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
 
-  &:hover {
+  &:hover,
+  &.focused {
     background: rgba(255, 255, 255, 0.08);
 
     .option-icon-container {
@@ -218,12 +331,12 @@
   }
 
   &.selected {
-    background: rgba(43, 110, 255, 0.15);
+    background: var(--theme-primary-soft-mid);
     color: #ffffff;
 
     .option-icon-container {
-      background: rgba(43, 110, 255, 0.25);
-      color: var(--btn-primary-bg);
+      background: var(--theme-primary-soft-strong);
+      color: var(--theme-primary);
     }
 
     .option-label {

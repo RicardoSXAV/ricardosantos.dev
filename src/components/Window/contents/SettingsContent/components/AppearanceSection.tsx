@@ -8,6 +8,13 @@ import {
   ThemeVariant,
 } from "@/stores/desktop.store";
 import BackgroundImageSelector from "./BackgroundImageSelector";
+import arrowDown from "@/assets/icons/interface/arrow-down.svg";
+import arrowUp from "@/assets/icons/interface/arrow-up.svg";
+import arrowLeft from "@/assets/icons/interface/arrow-left.svg";
+import arrowRight from "@/assets/icons/interface/arrow-right.svg";
+import sunIcon from "@/assets/icons/interface/sun.svg";
+import moonIcon from "@/assets/icons/interface/moon.svg";
+import Icon from "@/components/interface/Icon";
 
 export default function AppearanceSection() {
   const { t } = useTranslation();
@@ -23,21 +30,37 @@ export default function AppearanceSection() {
       value: "light", 
       label: t("appearance.themeLight"),
       description: "Clean and bright interface",
-      icon: "☀️" 
+      icon: <Icon src={sunIcon.src} color="#ff9f0f" size={16} /> 
     },
     { 
       value: "dark", 
       label: t("appearance.themeDark"),
       description: "Easy on the eyes in low light",
-      icon: "🌙" 
+      icon: <Icon src={moonIcon.src} darkColor="#fdf17e" lightColor="#ffe600ff" size={16} />
     },
   ];
 
   const navigationOrientationOptions: SelectOption[] = [
-    { value: "bottom", label: t("appearance.navigationBottom"), icon: "⬇️" },
-    { value: "top", label: t("appearance.navigationTop"), icon: "⬆️" },
-    { value: "left", label: t("appearance.navigationLeft"), icon: "⬅️" },
-    { value: "right", label: t("appearance.navigationRight"), icon: "➡️" },
+    { 
+      value: "bottom", 
+      label: t("appearance.navigationBottom"), 
+      icon: <Icon src={arrowDown.src} darkColor="#ffffff" size={16} /> 
+    },
+    { 
+      value: "top", 
+      label: t("appearance.navigationTop"), 
+      icon: <Icon src={arrowUp.src} darkColor="#ffffff" size={16} /> 
+    },
+    { 
+      value: "left", 
+      label: t("appearance.navigationLeft"), 
+      icon: <Icon src={arrowLeft.src} darkColor="#ffffff" size={16} /> 
+    },
+    { 
+      value: "right", 
+      label: t("appearance.navigationRight"), 
+      icon: <Icon src={arrowRight.src} darkColor="#ffffff" size={16} /> 
+    },
   ];
 
   const handleNavigationOrientationChange = (newOrientation: string) => {

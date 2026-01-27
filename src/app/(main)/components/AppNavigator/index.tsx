@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, PanInfo, Reorder } from "framer-motion";
@@ -5,6 +7,7 @@ import { AnimatePresence, motion, PanInfo, Reorder } from "framer-motion";
 import "./index.styles.scss";
 import { useDesktopStore } from "@/stores/desktop.store";
 import appIcons from "@/assets/icons/apps";
+import Box from "@/components/interface/Box";
 
 export default function AppNavigator() {
   const { 
@@ -105,7 +108,10 @@ export default function AppNavigator() {
   const dragAxis = isVertical ? 'y' : 'x';
 
   return (
-    <nav className={`app-navigator app-navigator--${navigatorOrientation}`}>
+    <Box 
+      fluidGlass={true}
+      className={`app-navigator app-navigator--${navigatorOrientation}`}
+    >
       <Reorder.Group as="div" axis={dragAxis} values={navApps} onReorder={setNavApps} className="app-list">
         <AnimatePresence mode="popLayout">
           {navApps.map((app) => {
@@ -120,6 +126,7 @@ export default function AppNavigator() {
                 value={app}
                 as="div"
                 layoutId={app.id}
+                layout
                 className="app-item"
                 data-app-id={app.id}
                 drag
@@ -130,26 +137,29 @@ export default function AppNavigator() {
                   opacity: isNearTrashBin ? 0.5 : 1
                 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                whileDrag={{ scale: isNearTrashBin ? 0.8 : 1.1, zIndex: 3 }}
+                whileDrag={{ scale: isNearTrashBin ? 0.8 : 1.1, zIndex: 10 }}
                 onClick={() => handleAppClick(app.id)}
                 onDragStart={() => setDraggingItemId(app.id)}
                 onDrag={(_, info) => {
                   setDraggedItemNearTrash(isNearTrash(info.point) ? app.id : null);
                 }}
                 onDragEnd={(_, info) => handleDragEnd(app.id, info)}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.1 }}
                 transition={{
                   layout: { type: "spring", stiffness: 300, damping: 30 }
                 }}
               >
                 {icon && (
-                  <Image
-                    src={icon}
-                    className="app-icon"
-                    alt={app.name}
-                    style={{ objectFit: "cover" }}
-                    fill
-                  />
+                  <>
+                    <Image
+                      src={icon}
+                      className="app-icon"
+                      alt={app.name}
+                      style={{ objectFit: "cover" }}
+                      fill
+                    />
+                    <div className="app-icon-shine" />
+                  </>
                 )}
 
                 {hasMinimizedWindow && !isBeingDragged && (
@@ -173,7 +183,8 @@ export default function AppNavigator() {
         role="button"
         tabIndex={0}
         layoutId="trash"
-        whileHover={{ scale: 1.05 }}
+        layout
+        whileHover={{ scale: 1.1 }}
         animate={{ opacity: 1 }}
         transition={{
           layout: { type: "spring", stiffness: 300, damping: 30 }
@@ -188,6 +199,6 @@ export default function AppNavigator() {
       >
         <Image src={appIcons.trash} className="app-icon" alt="Trash" fill />
       </motion.div>
-    </nav>
+    </Box>
   );
 }

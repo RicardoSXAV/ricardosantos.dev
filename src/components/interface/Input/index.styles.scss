@@ -1,0 +1,148 @@
+@import "../../../styles/globals.scss";
+
+.input-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  transition: all var(--transition-fast);
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &.full-width {
+    width: 100%;
+    max-width: none;
+  }
+
+  // Sizes
+  &.input-size-sm {
+    height: 32px;
+    padding: 0 var(--space-lg);
+    font-size: 13px;
+
+    .input-left-icon {
+      margin-right: 8px;
+      font-size: 12px;
+    }
+  }
+
+  &.input-size-md {
+    height: 40px;
+    padding: 0 var(--space-xl);
+    font-size: 14px;
+
+    .input-left-icon {
+      margin-right: 10px;
+      font-size: 14px;
+    }
+  }
+
+  &.input-size-lg {
+    height: 48px;
+    padding: 0 var(--space-2xl);
+    font-size: 15px;
+
+    .input-left-icon {
+      margin-right: 12px;
+      font-size: 16px;
+    }
+  }
+
+  // Dark Theme (Default)
+  &.input-variant-primary {
+    background: #0d1117;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full);
+    color: #ffffff;
+
+    &:hover {
+      background: #161b22;
+      border-color: var(--theme-primary);
+    }
+
+    &:focus-within {
+      border-color: var(--theme-primary);
+      box-shadow: 0 0 0 1px var(--theme-primary), 0 0 12px var(--theme-primary-glow);
+      background: #161b22;
+    }
+    
+    .input-left-icon {
+      color: var(--theme-primary);
+    }
+  }
+
+  // Light Theme
+  &.input-theme-light {
+    &.input-variant-primary {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      color: #0f172a;
+
+      &:hover {
+        background: #f8fafc;
+        border-color: var(--theme-primary);
+      }
+
+      &:focus-within {
+        border-color: var(--theme-primary);
+        box-shadow: 0 0 0 1px var(--theme-primary), 0 0 12px var(--theme-primary-soft-strong);
+        background: #ffffff;
+      }
+
+      .input-left-icon {
+        color: var(--theme-primary);
+      }
+    }
+  }
+
+  // Outline variant (if needed, simplified)
+  &.input-variant-outline {
+    background: var(--surface-control);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+
+    &:hover {
+      background: var(--surface-control-hover);
+      border-color: var(--border-strong);
+    }
+
+    &:focus-within {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+  }
+}
+
+.input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  width: 100%;
+  padding: 0;
+
+  &::placeholder {
+    color: #94a3b8;
+    opacity: 0.7;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.input-left-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
