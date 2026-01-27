@@ -33,7 +33,7 @@ const Box = forwardRef<HTMLDivElement, BoxProps>(
     const filterId = useId().replace(/:/g, "");
     const theme = useDesktopStore((state) => state.theme);
 
-    const mergedStyle: any = {
+    const mergedStyle = {
       ...style,
       backdropFilter: blur ? `blur(${typeof blur === "number" ? `${blur}px` : blur})` : undefined,
       WebkitBackdropFilter: blur ? `blur(${typeof blur === "number" ? `${blur}px` : blur})` : undefined,

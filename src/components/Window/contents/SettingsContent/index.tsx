@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import "./index.styles.scss";
-import Image from "next/image";
-import Button from "@/components/interface/Button";
 import Input from "@/components/interface/Input";
 
 import searchIcon from "@/assets/icons/interface/search.svg";
