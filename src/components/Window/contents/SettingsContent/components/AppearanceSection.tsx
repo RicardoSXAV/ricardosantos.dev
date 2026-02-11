@@ -7,6 +7,14 @@ import {
   NavigatorOrientation,
   ThemeVariant,
 } from "@/stores/desktop.store";
+import BackgroundImageSelector from "./BackgroundImageSelector";
+import arrowDown from "@/assets/icons/interface/arrow-down.svg";
+import arrowUp from "@/assets/icons/interface/arrow-up.svg";
+import arrowLeft from "@/assets/icons/interface/arrow-left.svg";
+import arrowRight from "@/assets/icons/interface/arrow-right.svg";
+import sunIcon from "@/assets/icons/interface/sun.svg";
+import moonIcon from "@/assets/icons/interface/moon.svg";
+import Icon from "@/components/interface/Icon";
 
 export default function AppearanceSection() {
   const { t } = useTranslation();
@@ -15,18 +23,59 @@ export default function AppearanceSection() {
     setNavigatorOrientation,
     theme,
     setTheme,
+    windowGradient,
+    setWindowGradient,
   } = useDesktopStore();
 
+  const windowGradientOptions: SelectOption[] = [
+    { 
+      value: "default", 
+      label: t("appearance.gradientDefault"),
+      description: "Standard subtle gradient",
+    },
+    { 
+      value: "aurora", 
+      label: t("appearance.gradientAurora"),
+      description: "Blue, yellow and purple ambient glow",
+    },
+  ];
+
   const themeOptions: SelectOption[] = [
-    { value: "light", label: t("appearance.themeLight") },
-    { value: "dark", label: t("appearance.themeDark") },
+    { 
+      value: "light", 
+      label: t("appearance.themeLight"),
+      description: "Clean and bright interface",
+      icon: <Icon src={sunIcon.src} color="#ff9f0f" size={16} /> 
+    },
+    { 
+      value: "dark", 
+      label: t("appearance.themeDark"),
+      description: "Easy on the eyes in low light",
+      icon: <Icon src={moonIcon.src} darkColor="#fdf17e" lightColor="#ffe600ff" size={16} />
+    },
   ];
 
   const navigationOrientationOptions: SelectOption[] = [
-    { value: "bottom", label: t("appearance.navigationBottom") },
-    { value: "top", label: t("appearance.navigationTop") },
-    { value: "left", label: t("appearance.navigationLeft") },
-    { value: "right", label: t("appearance.navigationRight") },
+    { 
+      value: "bottom", 
+      label: t("appearance.navigationBottom"), 
+      icon: <Icon src={arrowDown.src} darkColor="#ffffff" size={16} /> 
+    },
+    { 
+      value: "top", 
+      label: t("appearance.navigationTop"), 
+      icon: <Icon src={arrowUp.src} darkColor="#ffffff" size={16} /> 
+    },
+    { 
+      value: "left", 
+      label: t("appearance.navigationLeft"), 
+      icon: <Icon src={arrowLeft.src} darkColor="#ffffff" size={16} /> 
+    },
+    { 
+      value: "right", 
+      label: t("appearance.navigationRight"), 
+      icon: <Icon src={arrowRight.src} darkColor="#ffffff" size={16} /> 
+    },
   ];
 
   const handleNavigationOrientationChange = (newOrientation: string) => {
@@ -55,6 +104,33 @@ export default function AppearanceSection() {
               options={themeOptions}
               value={theme}
               onChange={handleThemeChange}
+              variant="primary"
+            />
+          </div>
+        </div>
+        <div className="section-item">
+          <div className="item-info">
+            <T k="appearance.backgroundImage" as="label" className="item-label" />
+            <T k="appearance.backgroundImageDescription" as="p" className="item-description" />
+          </div>
+          <div className="item-control">
+            <BackgroundImageSelector />
+          </div>
+        </div>
+      </div>
+      <div className="section-group">
+        <T k="appearance.windowStyle" as="h3" className="section-title" />
+        <div className="section-item">
+          <div className="item-info">
+            <T k="appearance.windowGradient" as="label" className="item-label" />
+            <T k="appearance.windowGradientDescription" as="p" className="item-description" />
+          </div>
+          <div className="item-control">
+            <Select
+              options={windowGradientOptions}
+              value={windowGradient}
+              onChange={setWindowGradient}
+              variant="primary"
             />
           </div>
         </div>
@@ -71,6 +147,7 @@ export default function AppearanceSection() {
               options={navigationOrientationOptions}
               value={navigatorOrientation}
               onChange={handleNavigationOrientationChange}
+              variant="primary"
             />
           </div>
         </div>

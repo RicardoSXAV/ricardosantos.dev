@@ -5,12 +5,16 @@
   width: 100dvw;
   height: 100dvh;
   min-height: -webkit-fill-available;
-  
+
   .main-content {
     flex: 1;
     background-image: url("../../assets/backgrounds/gradient-background.svg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    &[style*="backgroundImage"] {
+      background-image: none !important;
+    }
   }
 }

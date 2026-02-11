@@ -9,8 +9,8 @@ export default function LanguageAndRegion() {
   const setLocale = useLocaleStore((state) => state.setLocale);
 
   const languageOptions: SelectOption[] = [
-    { value: "en", label: t("languageAndRegion.english") },
-    { value: "pt", label: t("languageAndRegion.portuguese") },
+    { value: "en", label: t("languageAndRegion.english"), icon: "🇺🇸" },
+    { value: "pt", label: t("languageAndRegion.portuguese"), icon: "🇧🇷" },
   ];
 
   const handleLanguageChange = (newLocale: string) => {
@@ -31,6 +31,7 @@ export default function LanguageAndRegion() {
               options={languageOptions}
               value={locale}
               onChange={handleLanguageChange}
+              variant="primary"
             />
           </div>
         </div>

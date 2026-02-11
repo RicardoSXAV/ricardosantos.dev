@@ -14,6 +14,7 @@ interface DesktopStore {
   activeWindowId: string | null;
   navigatorOrientation: NavigatorOrientation;
   theme: ThemeVariant;
+  windowGradient: string;
 
   setNavApps: (navApps: DesktopApp[]) => void;
   setTrashedApps: (trashedApps: DesktopApp[]) => void;
@@ -21,6 +22,7 @@ interface DesktopStore {
   setActiveWindowId: (id: string | null) => void;
   setNavigatorOrientation: (orientation: NavigatorOrientation) => void;
   setTheme: (theme: ThemeVariant) => void;
+  setWindowGradient: (gradient: string) => void;
 }
 
 export const useDesktopStore = create<DesktopStore>()(
@@ -32,6 +34,7 @@ export const useDesktopStore = create<DesktopStore>()(
       activeWindowId: null,
       navigatorOrientation: 'bottom',
       theme: 'light',
+      windowGradient: 'default',
 
       setWindows: (windows: DesktopWindow[]) => set({ windows }),
       setNavApps: (navApps: DesktopApp[]) => set({ navApps }),
@@ -39,12 +42,14 @@ export const useDesktopStore = create<DesktopStore>()(
       setActiveWindowId: (activeWindowId: string | null) => set({ activeWindowId }),
       setNavigatorOrientation: (navigatorOrientation: NavigatorOrientation) => set({ navigatorOrientation }),
       setTheme: (theme: ThemeVariant) => set({ theme }),
+      setWindowGradient: (windowGradient: string) => set({ windowGradient }),
     }),
     {
       name: 'desktop-preferences',
       partialize: (state) => ({
         navigatorOrientation: state.navigatorOrientation,
         theme: state.theme,
+        windowGradient: state.windowGradient,
       }),
     }
   )

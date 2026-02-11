@@ -26,6 +26,8 @@
     "themeModeDescription": "Escolha entre uma experiência clara ou escura",
     "themeLight": "Claro",
     "themeDark": "Escuro",
+    "backgroundImage": "Imagem de Fundo",
+    "backgroundImageDescription": "Selecione uma imagem de fundo personalizada para a aplicação",
     "navigation": "Navegação",
     "navigationOrientation": "Orientação do Navegador de Aplicativos",
     "navigationOrientationDescription": "Escolha onde o navegador de aplicativos aparece na sua tela",
