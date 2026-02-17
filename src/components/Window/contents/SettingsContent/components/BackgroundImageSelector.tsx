@@ -1,116 +1,211 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { saveBackgroundImage } from "@/lib/indexeddb";
+import { useState, useEffect, useMemo } from "react";
+import { saveBackgroundImage, deleteBackgroundImage } from "@/lib/indexeddb";
 import { useBackgroundImageStore } from "@/stores/backgroundImage.store";
+import { useTranslation, T } from "@/hooks/useTranslation";
+import FileSelect from "@/components/interface/FileSelect";
+import Card from "@/components/interface/Card";
+import deepGradient from "@/assets/backgrounds/deep-gradient.svg";
+import starryNight from "@/assets/backgrounds/starry-night.svg";
+import liquidAura from "@/assets/backgrounds/liquid-aura.png";
+import arcticPeaks from "@/assets/backgrounds/arctic-peaks.svg";
+import fileUp from "@/assets/icons/interface/file-up.svg";
+import Icon from "@/components/interface/Icon";
 import "./BackgroundImageSelector.styles.scss";
 
-const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/svg+xml"];
+const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/svg+xml",
+];
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
-export default function BackgroundImageSelector() {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [error, setError] = useState<string | null>(null);
-  const backgroundImage = useBackgroundImageStore((state) => state.backgroundImageUrl);
-  const setBackgroundImageUrl = useBackgroundImageStore((state) => state.setBackgroundImageUrl);
-  const loadBackgroundImage = useBackgroundImageStore((state) => state.loadBackgroundImage);
+const SYSTEM_BACKGROUNDS = [
+  {
+    id: "deep-gradient",
+    title: "Deep Gradient",
+    subtitle: "Abstract - 5K",
+    src: deepGradient.src,
+  },
+  {
+    id: "starry-night",
+    title: "Starry Night",
+    subtitle: "Nature - 4K",
+    src: starryNight.src,
+  },
+  {
+    id: "liquid-aura",
+    title: "Liquid Aura",
+    subtitle: "Abstract - 8K",
+    src: liquidAura.src,
+  },
+  {
+    id: "arctic-peaks",
+    title: "Arctic Peaks",
+    subtitle: "Nature - 4K",
+    src: arcticPeaks.src,
+  },
+];
 
-  // Load background image on mount
+const DEFAULT_BACKGROUND_ID = "deep-gradient";
+
+export default function BackgroundImageSelector() {
+  const { t } = useTranslation();
+  const [error, setError] = useState<string | null>(null);
+  const [selectedBackgroundId, setSelectedBackgroundId] = useState<string | null>(
+    DEFAULT_BACKGROUND_ID,
+  );
+  const [now, setNow] = useState(() => new Date());
+
+  const backgroundImage = useBackgroundImageStore(
+    (state) => state.backgroundImageUrl,
+  );
+  const setBackgroundImageUrl = useBackgroundImageStore(
+    (state) => state.setBackgroundImageUrl,
+  );
+  const setSystemBackgroundId = useBackgroundImageStore(
+    (state) => state.setSystemBackgroundId,
+  );
+  const loadBackgroundImage = useBackgroundImageStore(
+    (state) => state.loadBackgroundImage,
+  );
+
   useEffect(() => {
     loadBackgroundImage();
   }, [loadBackgroundImage]);
 
-  const handleClick = () => {
-    fileInputRef.current?.click();
-  };
+  useEffect(() => {
+    if (!backgroundImage) {
+      setSelectedBackgroundId(DEFAULT_BACKGROUND_ID);
+      return;
+    }
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    const matched = SYSTEM_BACKGROUNDS.find(
+      (background) => background.src === backgroundImage,
+    );
+
+    setSelectedBackgroundId(matched ? matched.id : null);
+  }, [backgroundImage]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date());
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const timeLabel = useMemo(
+    () =>
+      now.toLocaleTimeString(undefined, {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    [now],
+  );
+
+  const dateLabel = useMemo(
+    () =>
+      now.toLocaleDateString(undefined, {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+      }),
+    [now],
+  );
+
+  const handleFilesSelected = async (files: FileList) => {
+    const file = files[0];
     if (!file) return;
 
-    // Reset error state
     setError(null);
 
-    // Validate file type
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
       setError("Invalid file type. Please use JPEG, PNG, WebP, or SVG.");
       return;
     }
 
-    // Validate file size
     if (file.size > MAX_FILE_SIZE) {
       setError("File too large. Maximum size is 5MB.");
       return;
     }
 
     try {
-      // Save the file directly to IndexedDB without compression
       await saveBackgroundImage(file);
-
-      // Create an object URL for preview and update store
       const objectUrl = URL.createObjectURL(file);
+      setSelectedBackgroundId(null);
       setBackgroundImageUrl(objectUrl);
     } catch (err) {
       setError("Failed to save background image. Please try again.");
       console.error(err);
     }
-
-    // Reset file input
-    event.target.value = "";
   };
 
-  const clearBackgroundImage = useBackgroundImageStore((state) => state.clearBackgroundImage);
+  const handleSystemBackgroundSelect = async (backgroundId: string) => {
+    const selected = SYSTEM_BACKGROUNDS.find(
+      (background) => background.id === backgroundId,
+    );
+    if (!selected) return;
 
-  const handleRemove = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+    setError(null);
+    setSelectedBackgroundId(backgroundId);
+    setSystemBackgroundId(backgroundId);
     try {
-      await clearBackgroundImage();
-      setError(null);
+      await deleteBackgroundImage();
     } catch (err) {
-      setError("Failed to remove background image.");
       console.error(err);
     }
+    setBackgroundImageUrl(selected.src);
   };
+
+  const previewImage = backgroundImage ?? deepGradient.src;
 
   return (
     <div className="background-image-selector">
-      <div className="selector-preview" onClick={handleClick}>
-        {backgroundImage ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={backgroundImage} alt="Current background" className="preview-image" />
-        ) : (
-          <div className="preview-placeholder">
-            <span className="placeholder-icon">🖼️</span>
-            <span className="placeholder-text">No background</span>
-          </div>
-        )}
-      </div>
-      <button
-        type="button"
-        className="selector-button"
-        onClick={handleClick}
-        title="Click to select background image"
-      >
-        Change
-      </button>
-      {backgroundImage && (
-        <button
-          type="button"
-          className="selector-remove-button"
-          onClick={handleRemove}
-          title="Remove background image"
+      <div className="background-preview-section">
+        <div className="background-section-title">
+          <span className="background-section-dot" />
+          <T k="appearance.currentWallpaper" as="span" />
+        </div>
+        <div
+          className="background-preview"
+          style={{ backgroundImage: `url(${previewImage})` }}
         >
-          Remove
-        </button>
-      )}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleFileSelect}
-        style={{ display: "none" }}
-      />
-      {error && <p className="selector-error">{error}</p>}
+          <div className="background-preview-overlay">
+            <span className="background-preview-time">{timeLabel}</span>
+            <span className="background-preview-date">{dateLabel}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="system-backgrounds-header">
+        <div className="background-section-title">
+          <span className="background-section-dot" />
+          <T k="appearance.systemBackgrounds" as="span" />
+        </div>
+        <FileSelect
+          label={t("appearance.chooseFromFiles")}
+          onFilesSelected={handleFilesSelected}
+          icon={<Icon src={fileUp.src} size={16} />}
+        />
+      </div>
+
+      <div className="system-backgrounds-grid">
+        {SYSTEM_BACKGROUNDS.map((background) => (
+          <Card
+            key={background.id}
+            title={background.title}
+            subtitle={background.subtitle}
+            imageSrc={background.src}
+            selected={selectedBackgroundId === background.id}
+            onClick={() => void handleSystemBackgroundSelect(background.id)}
+          />
+        ))}
+      </div>
+
+      {error && <p className="background-error">{error}</p>}
     </div>
   );
 }
