@@ -78,6 +78,10 @@
   --app-icon-bg: rgba(255, 255, 255, 0.7);
   --indicator-active: #e2e8f0;
   --divider-color: rgba(15, 23, 42, 0.12);
+
+  --color-error: #b42318;
+  --surface-error-muted: rgba(254, 228, 226, 0.85);
+  --border-error: rgba(253, 162, 155, 0.8);
 }
 
 html[data-theme="dark"] {
@@ -114,6 +118,10 @@ html[data-theme="dark"] {
   --app-icon-bg: rgba(15, 23, 42, 0.85);
   --indicator-active: #facc15;
   --divider-color: rgba(148, 163, 184, 0.24);
+
+  --color-error: #fca5a5;
+  --surface-error-muted: rgba(248, 113, 113, 0.14);
+  --border-error: rgba(248, 113, 113, 0.45);
 }
 
 html,

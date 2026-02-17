@@ -1,0 +1,50 @@
+<svg width="3200" height="2400" viewBox="0 0 3200 2400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="3200" height="2400" fill="url(#sky)"/>
+  <rect width="3200" height="2400" fill="url(#skyHaze)" opacity="0.55"/>
+
+  <path d="M0 980C320 900 620 880 960 930C1280 980 1500 960 1760 900C2060 830 2400 820 2720 880C2960 930 3120 960 3200 980V2400H0V980Z" fill="url(#ridge1)"/>
+  <path d="M0 1180C260 1080 580 1060 900 1120C1200 1180 1440 1170 1700 1100C2010 1010 2320 1020 2620 1100C2860 1180 3060 1200 3200 1210V2400H0V1180Z" fill="url(#ridge2)"/>
+  <path d="M0 1380C240 1280 520 1260 820 1320C1100 1380 1360 1400 1640 1330C1980 1240 2280 1260 2580 1340C2860 1420 3050 1450 3200 1460V2400H0V1380Z" fill="url(#ridge3)"/>
+  <path d="M0 1600C260 1500 560 1480 860 1550C1180 1630 1460 1640 1760 1560C2100 1470 2420 1490 2700 1590C2940 1680 3100 1710 3200 1720V2400H0V1600Z" fill="url(#ridge4)"/>
+  <path d="M0 1820C240 1730 540 1700 860 1780C1200 1860 1540 1880 1880 1790C2240 1700 2580 1720 2860 1820C3040 1890 3140 1930 3200 1960V2400H0V1820Z" fill="url(#ridge5)"/>
+  <path d="M0 2040C260 1960 560 1930 900 2020C1260 2110 1620 2140 1980 2050C2380 1950 2720 1980 2970 2080C3120 2140 3180 2190 3200 2220V2400H0V2040Z" fill="url(#ridge6)"/>
+
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="2400" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f3c9a5"/>
+      <stop offset="0.35" stop-color="#d9b9a7"/>
+      <stop offset="0.6" stop-color="#9fb3b0"/>
+      <stop offset="1" stop-color="#2a3a44"/>
+    </linearGradient>
+    <linearGradient id="skyHaze" x1="0" y1="600" x2="0" y2="2000" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="0.45" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#0b1d2a" stop-opacity="0.05"/>
+    </linearGradient>
+
+    <linearGradient id="ridge1" x1="0" y1="820" x2="0" y2="1400" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e2d2bf"/>
+      <stop offset="1" stop-color="#c6c0b4"/>
+    </linearGradient>
+    <linearGradient id="ridge2" x1="0" y1="1020" x2="0" y2="1600" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b7b5aa"/>
+      <stop offset="1" stop-color="#99a9a4"/>
+    </linearGradient>
+    <linearGradient id="ridge3" x1="0" y1="1200" x2="0" y2="1800" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8ea3a0"/>
+      <stop offset="1" stop-color="#6f8b8c"/>
+    </linearGradient>
+    <linearGradient id="ridge4" x1="0" y1="1400" x2="0" y2="2100" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5d7a7d"/>
+      <stop offset="1" stop-color="#3c5a62"/>
+    </linearGradient>
+    <linearGradient id="ridge5" x1="0" y1="1620" x2="0" y2="2300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3d5a66"/>
+      <stop offset="1" stop-color="#203c46"/>
+    </linearGradient>
+    <linearGradient id="ridge6" x1="0" y1="1840" x2="0" y2="2400" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22343f"/>
+      <stop offset="1" stop-color="#121b2a"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -50,9 +50,13 @@
       }
 
       &.active {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        background: linear-gradient(
+          135deg,
+          var(--theme-primary) 0%,
+          var(--theme-primary-hover) 100%
+        );
         color: #ffffff;
-        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+        box-shadow: 0 4px 15px var(--theme-primary-glow);
       }
     }
 

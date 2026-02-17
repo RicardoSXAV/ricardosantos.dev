@@ -11,6 +11,7 @@ export interface SelectOption {
   label: string;
   description?: string;
   icon?: React.ReactNode;
+  iconVariant?: "default" | "swatch";
 }
 
 interface SelectProps {
@@ -22,6 +23,7 @@ interface SelectProps {
   variant?: "primary" | "outline";
   fullWidth?: boolean;
   size?: "sm" | "md" | "lg";
+  showSelectedIcon?: boolean;
 }
 
 interface DropdownPosition {
@@ -38,7 +40,8 @@ export default function Select({
   disabled = false,
   variant = "primary",
   fullWidth = false,
-  size = "md"
+  size = "md",
+  showSelectedIcon = false,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(-1);
@@ -212,7 +215,20 @@ export default function Select({
         type="button"
       >
         <span className="select-value">
-          {selectedOption ? selectedOption.label : placeholder}
+          {showSelectedIcon && selectedOption?.icon && (
+            <span
+              className={`select-trigger-icon ${
+                selectedOption.iconVariant
+                  ? `icon-variant-${selectedOption.iconVariant}`
+                  : ""
+              }`}
+            >
+              {selectedOption.icon}
+            </span>
+          )}
+          <span className="select-value-label">
+            {selectedOption ? selectedOption.label : placeholder}
+          </span>
         </span>
         <span className={`select-arrow ${isOpen ? "open" : ""}`}>
           <svg
@@ -268,7 +284,13 @@ export default function Select({
                   >
                     <div className="option-main">
                       {option.icon && (
-                        <div className="option-icon-container">
+                        <div
+                          className={`option-icon-container ${
+                            option.iconVariant
+                              ? `icon-variant-${option.iconVariant}`
+                              : ""
+                          }`}
+                        >
                           {option.icon}
                         </div>
                       )}

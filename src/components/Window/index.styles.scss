@@ -2,7 +2,7 @@
   position: absolute;
   background: var(--surface-window);
   backdrop-filter: blur(12px);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border-glass);
   min-width: 200px;
@@ -42,7 +42,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--space-md) var(--space-lg);
+    padding: 0 var(--space-lg);
+    height: 42px;
     background: var(--surface-window-header);
     border-bottom: 1px solid var(--border-glass);
     user-select: none;

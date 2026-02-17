@@ -12,7 +12,9 @@ import type en from "../../../../../messages/en.json";
 import Icon from "@/components/interface/Icon";
 import Box from "@/components/interface/Box";
 import PanelNavigator from "@/components/interface/PanelNavigator";
-import { useDesktopStore } from "@/stores/desktop.store";
+import settingsIcon from "@/assets/icons/interface/settings.svg";
+import globeIcon from "@/assets/icons/interface/globe.svg";
+import paletteIcon from "@/assets/icons/interface/palette.svg";
 
 type NestedKeyOf<T> = T extends object
   ? {
@@ -27,34 +29,28 @@ type NestedKeyOf<T> = T extends object
 interface SettingsOption {
   id: string;
   labelKey: NestedKeyOf<typeof en>;
-  icon: string;
+  icon: React.ReactNode;
 }
 
 const settingsCategories: SettingsOption[] = [
-  { id: "general", labelKey: "settings.general", icon: "⚙️" },
-  { id: "language-and-region", labelKey: "settings.languageAndRegion", icon: "🌐" },
-  { id: "appearance", labelKey: "settings.appearance", icon: "🎨" },
+  { id: "general", labelKey: "settings.general", icon: <Icon src={settingsIcon.src} /> },
+  { id: "language-and-region", labelKey: "settings.languageAndRegion", icon: <Icon src={globeIcon.src} /> },
+  { id: "appearance", labelKey: "settings.appearance", icon: <Icon src={paletteIcon.src} /> },
 ];
 
 export default function SettingsContent() {
   const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState("general");
-  const windowGradient = useDesktopStore((state) => state.windowGradient);
 
   const currentCategory = settingsCategories.find((cat) => cat.id === selectedCategory);
-
-  const getGradient = () => {
-    if (windowGradient === "aurora") return "var(--gradient-aurora-soft)";
-    return undefined; // Uses default from CSS
-  };
 
   const categoryContentMap: Record<string, React.ReactNode> = {
     "language-and-region": <LanguageSection />,
     general: (
       <div className="settings-section">
-        <p>
+        {/* <p>
           <T k="settings.version" />: 0.0.1
-        </p>
+        </p> */}
       </div>
     ),
     appearance: <AppearanceSection />,
@@ -62,8 +58,7 @@ export default function SettingsContent() {
 
   return (
     <Box 
-      variant="gradient" 
-      gradient={getGradient()}
+      // variant="glass"
       className="settings-content" 
       padding="16px" 
       borderRadius="0"
@@ -72,7 +67,7 @@ export default function SettingsContent() {
         items={settingsCategories.map((cat) => ({
           id: cat.id,
           label: t(cat.labelKey),
-          icon: <span style={{ fontSize: '18px' }}>{cat.icon}</span>,
+          icon: cat.icon,
         }))}
         activeId={selectedCategory}
         onChange={setSelectedCategory}
@@ -112,46 +107,48 @@ export default function SettingsContent() {
       />
 
       <Box variant="primary" className="settings-main-panel" blur={20} borderRadius="32px">
-        <div className="settings-header">
-          <div className="settings-icon">{currentCategory?.icon}</div>
-          <div className="settings-header-text">
-            {currentCategory && (
-              <T 
-                k={currentCategory.labelKey} 
-                as="h2" 
-                className="settings-title" 
-                key={currentCategory.id}
-              />
-            )}
-            {selectedCategory === "general" && (
-              <T 
-                k="settings.generalDescription" 
-                as="p" 
-                className="settings-description" 
-                key="general-description"
-              />
-            )}
-            {selectedCategory === "language-and-region" && (
-              <T 
-                k="settings.languageAndRegionDescription" 
-                as="p" 
-                className="settings-description" 
-                key="language-and-region-description"
-              />
-            )}
-            {selectedCategory === "appearance" && (
-              <T 
-                k="settings.appearanceDescription" 
-                as="p" 
-                className="settings-description" 
-                key="appearance-description"
-              />
-            )}
+        <div className="settings-scroll-area">
+          <div className="settings-header">
+            <div className="settings-icon">{currentCategory?.icon}</div>
+            <div className="settings-header-text">
+              {currentCategory && (
+                <T 
+                  k={currentCategory.labelKey} 
+                  as="h2" 
+                  className="settings-title" 
+                  key={currentCategory.id}
+                />
+              )}
+              {selectedCategory === "general" && (
+                <T 
+                  k="settings.generalDescription" 
+                  as="p" 
+                  className="settings-description" 
+                  key="general-description"
+                />
+              )}
+              {selectedCategory === "language-and-region" && (
+                <T 
+                  k="settings.languageAndRegionDescription" 
+                  as="p" 
+                  className="settings-description" 
+                  key="language-and-region-description"
+                />
+              )}
+              {selectedCategory === "appearance" && (
+                <T 
+                  k="settings.appearanceDescription" 
+                  as="p" 
+                  className="settings-description" 
+                  key="appearance-description"
+                />
+              )}
+            </div>
           </div>
-        </div>
 
-        <div className="settings-options-container">
-          <div className="settings-options">{categoryContentMap[selectedCategory]}</div>
+          <div className="settings-options-container">
+            <div className="settings-options">{categoryContentMap[selectedCategory]}</div>
+          </div>
         </div>
       </Box>
     </Box>
