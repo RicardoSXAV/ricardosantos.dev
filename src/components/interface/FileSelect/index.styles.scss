@@ -1,0 +1,113 @@
+@import "../../../styles/globals.scss";
+
+.file-select {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: fit-content;
+
+  &.full-width {
+    width: 100%;
+
+    .file-select-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}
+
+.file-select-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-soft);
+  background: var(--surface-control);
+  color: var(--color-text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+
+  &:hover:not(:disabled) {
+    background: var(--surface-control-hover);
+    border-color: var(--theme-primary);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--surface-control-muted);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 0 1px var(--theme-primary), 0 0 12px var(--theme-primary-glow);
+  }
+}
+
+.file-select-theme-dark {
+  .file-select-button {
+    background: #0d1117;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+
+    &:hover:not(:disabled) {
+      background: #161b22;
+    }
+
+    &:focus-visible {
+      border-color: var(--theme-primary);
+      box-shadow: 0 0 0 1px var(--theme-primary), 0 0 12px var(--theme-primary-glow);
+    }
+  }
+}
+
+.file-select-theme-light {
+  .file-select-button {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #0f172a;
+
+    &:hover:not(:disabled) {
+      background: #f8fafc;
+      border-color: var(--theme-primary);
+    }
+
+    &:focus-visible {
+      border-color: var(--theme-primary);
+      box-shadow: 0 0 0 1px var(--theme-primary), 0 0 12px var(--theme-primary-soft-strong);
+    }
+  }
+}
+
+.file-select-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--theme-primary-soft);
+  color: var(--theme-primary);
+}
+
+.file-select-label {
+  white-space: nowrap;
+}
+
+.file-select-helper {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.file-select-input {
+  display: none;
+}

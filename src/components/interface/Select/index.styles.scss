@@ -63,6 +63,14 @@
       .select-arrow {
         color: var(--theme-primary);
       }
+
+      .select-trigger-icon {
+        background: rgba(15, 23, 42, 0.08);
+
+        &.icon-variant-swatch {
+          background: transparent;
+        }
+      }
     }
   }
 
@@ -131,10 +139,35 @@
 
 .select-value {
   flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   text-align: left;
+}
+
+.select-value-label {
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.select-trigger-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &.icon-variant-swatch {
+    width: 14px;
+    height: 14px;
+    background: transparent;
+  }
 }
 
 .select-arrow {
@@ -179,12 +212,12 @@
       &.focused {
         background: var(--surface-pill);
         
-        .option-icon-container {
+        .option-icon-container:not(.icon-variant-swatch) {
             background: rgba(0, 0, 0, 0.06);
         }
       }
 
-      .option-icon-container {
+      .option-icon-container:not(.icon-variant-swatch) {
         background: rgba(0, 0, 0, 0.04);
         color: var(--color-text-muted);
       }
@@ -199,7 +232,7 @@
         background: var(--theme-primary-soft);
         color: var(--color-text-primary);
 
-        .option-icon-container {
+        .option-icon-container:not(.icon-variant-swatch) {
           background: var(--theme-primary-soft-hover);
           color: var(--theme-primary);
         }
@@ -284,6 +317,12 @@
     font-size: 14px;
     flex-shrink: 0;
     transition: all var(--transition-fast);
+
+    &.icon-variant-swatch {
+      width: 18px;
+      height: 18px;
+      background: transparent;
+    }
   }
 
   .option-text {
@@ -325,7 +364,7 @@
   &.focused {
     background: rgba(255, 255, 255, 0.08);
 
-    .option-icon-container {
+    .option-icon-container:not(.icon-variant-swatch) {
       background: rgba(255, 255, 255, 0.1);
     }
   }
@@ -334,7 +373,7 @@
     background: var(--theme-primary-soft-mid);
     color: #ffffff;
 
-    .option-icon-container {
+    .option-icon-container:not(.icon-variant-swatch) {
       background: var(--theme-primary-soft-strong);
       color: var(--theme-primary);
     }

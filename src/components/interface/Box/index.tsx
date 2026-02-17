@@ -12,6 +12,8 @@ interface BoxProps extends HTMLMotionProps<"div"> {
   gradient?: string;
   padding?: string | number;
   borderRadius?: string | number;
+  width?: string | number;
+  height?: string | number;
 }
 
 const Box = forwardRef<HTMLDivElement, BoxProps>(
@@ -24,6 +26,8 @@ const Box = forwardRef<HTMLDivElement, BoxProps>(
       gradient,
       padding,
       borderRadius,
+      width,
+      height,
       className = "",
       style,
       ...props
@@ -39,6 +43,8 @@ const Box = forwardRef<HTMLDivElement, BoxProps>(
       WebkitBackdropFilter: blur ? `blur(${typeof blur === "number" ? `${blur}px` : blur})` : undefined,
       padding: padding,
       borderRadius: borderRadius,
+      width: width,
+      height: height,
     };
 
     if (gradient) {
