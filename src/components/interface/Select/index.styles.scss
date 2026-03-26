@@ -352,14 +352,6 @@
     text-overflow: ellipsis;
   }
 
-  .option-check {
-    color: var(--theme-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
   &:hover,
   &.focused {
     background: rgba(255, 255, 255, 0.08);

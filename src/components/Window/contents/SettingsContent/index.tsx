@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import "./index.styles.scss";
 import Input from "@/components/interface/Input";
 
@@ -38,29 +39,56 @@ const settingsCategories: SettingsOption[] = [
   { id: "appearance", labelKey: "settings.appearance", icon: <Icon src={paletteIcon.src} /> },
 ];
 
+interface SearchableItem {
+  id: string;
+  categoryId: string;
+  terms: string[];
+}
+
+const SEARCHABLE_ITEMS: SearchableItem[] = [
+  { id: "theme", categoryId: "appearance", terms: ["theme", "light", "dark", "mode", "appearance", "experience", "bright"] },
+  { id: "color", categoryId: "appearance", terms: ["color", "accent", "highlight", "blue", "purple", "pink", "orange", "green", "cyan", "silver", "controls"] },
+  { id: "navigation", categoryId: "appearance", terms: ["navigation", "navigator", "orientation", "bottom", "top", "left", "right", "screen", "dock"] },
+  { id: "background", categoryId: "appearance", terms: ["background", "wallpaper", "image", "custom", "backdrop"] },
+  { id: "language", categoryId: "language-and-region", terms: ["language", "region", "english", "portuguese", "locale", "interface", "preferred"] },
+];
+
 export default function SettingsContent() {
   const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState("general");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const currentCategory = settingsCategories.find((cat) => cat.id === selectedCategory);
 
+  const matchedItems = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return null;
+    return SEARCHABLE_ITEMS.filter((item) =>
+      item.terms.some((term) => term.includes(q))
+    );
+  }, [searchQuery]);
+
+  const isSearching = matchedItems !== null;
+  const hasResults = isSearching && matchedItems.length > 0;
+
+  const matchedAppearanceIds = matchedItems
+    ?.filter((item) => item.categoryId === "appearance")
+    .map((item) => item.id) ?? [];
+
+  const matchedLanguageIds = matchedItems
+    ?.filter((item) => item.categoryId === "language-and-region")
+    .map((item) => item.id) ?? [];
+
   const categoryContentMap: Record<string, React.ReactNode> = {
     "language-and-region": <LanguageSection />,
-    general: (
-      <div className="settings-section">
-        {/* <p>
-          <T k="settings.version" />: 0.0.1
-        </p> */}
-      </div>
-    ),
+    general: <div className="settings-section" />,
     appearance: <AppearanceSection />,
   };
 
   return (
-    <Box 
-      // variant="glass"
-      className="settings-content" 
-      padding="16px" 
+    <Box
+      className="settings-content"
+      padding="16px"
       borderRadius="0"
     >
       <PanelNavigator
@@ -70,7 +98,10 @@ export default function SettingsContent() {
           icon: cat.icon,
         }))}
         activeId={selectedCategory}
-        onChange={setSelectedCategory}
+        onChange={(id) => {
+          setSelectedCategory(id);
+          setSearchQuery("");
+        }}
         header={
           <div className="settings-panel-header">
             <div className="settings-brand">
@@ -85,25 +116,11 @@ export default function SettingsContent() {
               fullWidth
               leftIcon={<Icon src={searchIcon.src} size={14} />}
               className="settings-search-input"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         }
-        // footer={
-        //   <div className="settings-user-profile">
-        //     <div className="user-avatar">
-        //       {/* <Image 
-        //         src="https://github.com/github.png" 
-        //         alt="User" 
-        //         width={32} 
-        //         height={32} 
-        //       /> */}
-        //     </div>
-        //     <div className="user-info">
-        //       <span className="user-name">Ricardo Santos</span>
-        //       <span className="user-role">Administrator</span>
-        //     </div>
-        //   </div>
-        // }
       />
 
       <Box variant="primary" className="settings-main-panel" blur={20} borderRadius="32px">
@@ -112,34 +129,34 @@ export default function SettingsContent() {
             <div className="settings-icon">{currentCategory?.icon}</div>
             <div className="settings-header-text">
               {currentCategory && (
-                <T 
-                  k={currentCategory.labelKey} 
-                  as="h2" 
-                  className="settings-title" 
+                <T
+                  k={currentCategory.labelKey}
+                  as="h2"
+                  className="settings-title"
                   key={currentCategory.id}
                 />
               )}
-              {selectedCategory === "general" && (
-                <T 
-                  k="settings.generalDescription" 
-                  as="p" 
-                  className="settings-description" 
+              {!isSearching && selectedCategory === "general" && (
+                <T
+                  k="settings.generalDescription"
+                  as="p"
+                  className="settings-description"
                   key="general-description"
                 />
               )}
-              {selectedCategory === "language-and-region" && (
-                <T 
-                  k="settings.languageAndRegionDescription" 
-                  as="p" 
-                  className="settings-description" 
+              {!isSearching && selectedCategory === "language-and-region" && (
+                <T
+                  k="settings.languageAndRegionDescription"
+                  as="p"
+                  className="settings-description"
                   key="language-and-region-description"
                 />
               )}
-              {selectedCategory === "appearance" && (
-                <T 
-                  k="settings.appearanceDescription" 
-                  as="p" 
-                  className="settings-description" 
+              {!isSearching && selectedCategory === "appearance" && (
+                <T
+                  k="settings.appearanceDescription"
+                  as="p"
+                  className="settings-description"
                   key="appearance-description"
                 />
               )}
@@ -147,7 +164,44 @@ export default function SettingsContent() {
           </div>
 
           <div className="settings-options-container">
-            <div className="settings-options">{categoryContentMap[selectedCategory]}</div>
+            <AnimatePresence mode="wait">
+              {isSearching ? (
+                <motion.div
+                  key="search-results"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.12 }}
+                  className="settings-options"
+                >
+                  {hasResults ? (
+                    <div className="settings-section">
+                      {matchedAppearanceIds.length > 0 && (
+                        <AppearanceSection visibleIds={matchedAppearanceIds} />
+                      )}
+                      {matchedLanguageIds.length > 0 && (
+                        <LanguageSection visibleIds={matchedLanguageIds} />
+                      )}
+                    </div>
+                  ) : (
+                    <p className="settings-search-empty">
+                      No settings found for &ldquo;{searchQuery}&rdquo;
+                    </p>
+                  )}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="category"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.12 }}
+                  className="settings-options"
+                >
+                  {categoryContentMap[selectedCategory]}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </Box>

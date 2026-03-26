@@ -10,7 +10,7 @@ import appIcons from "@/assets/icons/apps";
 import Box from "@/components/interface/Box";
 
 export default function AppNavigator() {
-  const { 
+  const {
     navApps,
     trashedApps,
     setNavApps,
@@ -18,7 +18,8 @@ export default function AppNavigator() {
     windows,
     setWindows,
     setActiveWindowId,
-    navigatorOrientation
+    navigatorOrientation,
+    windowPreferences,
   } = useDesktopStore();
   const trashRef = useRef<HTMLDivElement>(null);
   const [draggedItemNearTrash, setDraggedItemNearTrash] = useState<string | null>(null);
@@ -75,10 +76,11 @@ export default function AppNavigator() {
     }
 
     if (!windows.some((window) => window.appId === id)) {
+      const savedPref = windowPreferences[id];
       const newWindow = {
         appId: id,
-        position: { x: 300, y: 300 },
-        size: { width: 450, height: 300 },
+        position: savedPref?.position ?? { x: 300, y: 300 },
+        size: savedPref?.size ?? { width: 750, height: 400 },
         zIndex: nextZIndex,
       };
       setWindows([...windows, newWindow]);

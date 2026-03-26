@@ -42,16 +42,6 @@ export default function PanelNavigator({
         
         <div className="panel-items">
           {items.map((item) => (
-            // <button
-            //   key={item.id}
-            //   className={`panel-item ${activeId === item.id ? "active" : ""}`}
-            //   onClick={() => onChange(item.id)}
-            //   type="button"
-            // >
-            //   {item.icon && <span className="item-icon">{item.icon}</span>}
-            //   <span className="item-label">{item.label}</span>
-            //   {activeId === item.id && <div className="active-indicator" />}
-            // </button>
             <Button
               key={item.id}
               icon={item.icon}
