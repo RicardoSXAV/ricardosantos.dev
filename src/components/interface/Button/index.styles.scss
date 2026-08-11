@@ -13,21 +13,25 @@
   transition: all var(--transition-normal);
   user-select: none;
   width: fit-content;
+  flex-shrink: 0;
 
   &.btn-size-sm {
     height: 32px;
+    min-height: 32px;
     padding: 0 var(--space-lg);
     font-size: 13px;
   }
 
   &.btn-size-md {
     height: 40px;
+    min-height: 40px;
     padding: 0 var(--space-xl);
     font-size: 14px;
   }
 
   &.btn-size-lg {
     height: 48px;
+    min-height: 48px;
     padding: 0 var(--space-2xl);
     font-size: 15px;
   }

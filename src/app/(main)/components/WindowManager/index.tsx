@@ -6,7 +6,7 @@ import { useDesktopStore } from "@/stores/desktop.store";
 import Window from "@/components/Window";
 
 export default function WindowManager() {
-  const { windows, setWindows, activeWindowId, setActiveWindowId } = useDesktopStore();
+  const { windows, setWindows, activeWindowId, setActiveWindowId, windowPreferences, setWindowPreference } = useDesktopStore();
 
   const handlePositionChange = (id: string, position: { x: number; y: number }) => {
     setWindows(
@@ -14,6 +14,8 @@ export default function WindowManager() {
         window.appId === id ? { ...window, position } : window
       )
     );
+    const current = windowPreferences[id];
+    setWindowPreference(id, { position, size: current?.size ?? windows.find(w => w.appId === id)!.size });
   };
 
   const handleSizeChange = (id: string, size: { width: number; height: number }) => {
@@ -22,6 +24,8 @@ export default function WindowManager() {
         window.appId === id ? { ...window, size } : window
       )
     );
+    const current = windowPreferences[id];
+    setWindowPreference(id, { size, position: current?.position ?? windows.find(w => w.appId === id)!.position });
   };
 
   const handleWindowFocus = (id: string) => {

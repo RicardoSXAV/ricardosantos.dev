@@ -8,9 +8,10 @@ import "./index.styles.scss";
 import { useDesktopStore } from "@/stores/desktop.store";
 import appIcons from "@/assets/icons/apps";
 import Box from "@/components/interface/Box";
+import TrashIcon from "@/app/(main)/components/AppNavigator/components/TrashIcon";
 
 export default function AppNavigator() {
-  const { 
+  const {
     navApps,
     trashedApps,
     setNavApps,
@@ -18,7 +19,8 @@ export default function AppNavigator() {
     windows,
     setWindows,
     setActiveWindowId,
-    navigatorOrientation
+    navigatorOrientation,
+    windowPreferences,
   } = useDesktopStore();
   const trashRef = useRef<HTMLDivElement>(null);
   const [draggedItemNearTrash, setDraggedItemNearTrash] = useState<string | null>(null);
@@ -75,10 +77,11 @@ export default function AppNavigator() {
     }
 
     if (!windows.some((window) => window.appId === id)) {
+      const savedPref = windowPreferences[id];
       const newWindow = {
         appId: id,
-        position: { x: 300, y: 300 },
-        size: { width: 450, height: 300 },
+        position: savedPref?.position ?? { x: 300, y: 300 },
+        size: savedPref?.size ?? { width: 750, height: 400 },
         zIndex: nextZIndex,
       };
       setWindows([...windows, newWindow]);
@@ -184,7 +187,6 @@ export default function AppNavigator() {
         tabIndex={0}
         layoutId="trash"
         layout
-        whileHover={{ scale: 1.1 }}
         animate={{ opacity: 1 }}
         transition={{
           layout: { type: "spring", stiffness: 300, damping: 30 }
@@ -197,7 +199,7 @@ export default function AppNavigator() {
           }
         }}
       >
-        <Image src={appIcons.trash} className="app-icon" alt="Trash" fill />
+        <TrashIcon className="app-icon" open={draggedItemNearTrash !== null} />
       </motion.div>
     </Box>
   );

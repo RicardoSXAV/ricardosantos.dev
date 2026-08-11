@@ -8,6 +8,11 @@ import { AccentColor, DEFAULT_ACCENT_COLOR } from '@/theme/accentColors';
 export type NavigatorOrientation = 'bottom' | 'top' | 'left' | 'right';
 export type ThemeVariant = 'light' | 'dark';
 
+export interface WindowPreference {
+  position: { x: number; y: number };
+  size: { width: number; height: number };
+}
+
 interface DesktopStore {
   navApps: DesktopApp[];
   trashedApps: DesktopApp[];
@@ -17,6 +22,7 @@ interface DesktopStore {
   theme: ThemeVariant;
   accentColor: AccentColor;
   windowGradient: string;
+  windowPreferences: Record<string, WindowPreference>;
 
   setNavApps: (navApps: DesktopApp[]) => void;
   setTrashedApps: (trashedApps: DesktopApp[]) => void;
@@ -26,6 +32,7 @@ interface DesktopStore {
   setTheme: (theme: ThemeVariant) => void;
   setAccentColor: (accentColor: AccentColor) => void;
   setWindowGradient: (gradient: string) => void;
+  setWindowPreference: (appId: string, pref: WindowPreference) => void;
 }
 
 export const useDesktopStore = create<DesktopStore>()(
@@ -39,6 +46,7 @@ export const useDesktopStore = create<DesktopStore>()(
       theme: 'light',
       accentColor: DEFAULT_ACCENT_COLOR,
       windowGradient: 'default',
+      windowPreferences: {},
 
       setWindows: (windows: DesktopWindow[]) => set({ windows }),
       setNavApps: (navApps: DesktopApp[]) => set({ navApps }),
@@ -48,6 +56,10 @@ export const useDesktopStore = create<DesktopStore>()(
       setTheme: (theme: ThemeVariant) => set({ theme }),
       setAccentColor: (accentColor: AccentColor) => set({ accentColor }),
       setWindowGradient: (windowGradient: string) => set({ windowGradient }),
+      setWindowPreference: (appId: string, pref: WindowPreference) =>
+        set((state) => ({
+          windowPreferences: { ...state.windowPreferences, [appId]: pref },
+        })),
     }),
     {
       name: 'desktop-preferences',
@@ -56,6 +68,7 @@ export const useDesktopStore = create<DesktopStore>()(
         theme: state.theme,
         accentColor: state.accentColor,
         windowGradient: state.windowGradient,
+        windowPreferences: state.windowPreferences,
       }),
     }
   )

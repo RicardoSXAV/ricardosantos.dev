@@ -82,6 +82,18 @@
   --color-error: #b42318;
   --surface-error-muted: rgba(254, 228, 226, 0.85);
   --border-error: rgba(253, 162, 155, 0.8);
+
+  /* LinkedIn App */
+  --linkedin-app-primary: #0a66c2;
+  --linkedin-app-primary-hover: #004182;
+  --linkedin-app-primary-soft: rgba(10, 102, 194, 0.1);
+  --linkedin-app-bg: #f3f2ee;
+  --linkedin-app-card-bg: #ffffff;
+  --linkedin-app-text: #191919;
+  --linkedin-app-text-secondary: #666666;
+  --linkedin-app-text-muted: #b0b7bf;
+  --linkedin-app-border: rgba(0, 0, 0, 0.15);
+  --linkedin-app-cover: #c4c4c4;
 }
 
 html[data-theme="dark"] {
