@@ -4,7 +4,13 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
 import logoIcon from "@/assets/icons/logo.svg";
+import batteryChargingIcon from "@/assets/icons/interface/battery-charging.svg";
+import batteryIcon from "@/assets/icons/interface/battery.svg";
+import wifiLowIcon from "@/assets/icons/interface/wifi-low.svg";
+import wifiOffIcon from "@/assets/icons/interface/wifi-off.svg";
+import wifiIcon from "@/assets/icons/interface/wifi.svg";
 import Box from "@/components/interface/Box";
+import Icon from "@/components/interface/Icon";
 import { useLocaleStore } from "@/stores/locale.store";
 import { useDesktopStore } from "@/stores/desktop.store";
 import { STATIC_APP_NAMES } from "@/stores/data/desktop.data";
@@ -137,6 +143,25 @@ export default function SettingsBar() {
   const formattedDateTime = useMemo(() => {
     if (!isHydrated) return "--";
 
+    if (locale === "pt") {
+      const weekday = new Intl.DateTimeFormat("pt-BR", {
+        weekday: "short",
+      }).format(now);
+      const day = new Intl.DateTimeFormat("pt-BR", {
+        day: "2-digit",
+      }).format(now);
+      const month = new Intl.DateTimeFormat("pt-BR", {
+        month: "short",
+      }).format(now);
+      const time = new Intl.DateTimeFormat("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      }).format(now);
+
+      return `${weekday.charAt(0).toUpperCase()}${weekday.slice(1)} ${day} de ${month} ${time}`;
+    }
+
     return new Intl.DateTimeFormat(localeTag, {
       weekday: "short",
       day: "2-digit",
@@ -144,7 +169,7 @@ export default function SettingsBar() {
       hour: "2-digit",
       minute: "2-digit",
     }).format(now);
-  }, [isHydrated, localeTag, now]);
+  }, [isHydrated, locale, localeTag, now]);
 
   const focusedAppName = useMemo(() => {
     if (!activeWindowId) return null;
@@ -160,9 +185,6 @@ export default function SettingsBar() {
       focusedWindow.appId
     );
   }, [activeWindowId, navApps, windows]);
-
-  const batteryPrefix = locale === "pt" ? "Bateria" : "Battery";
-  const internetPrefix = locale === "pt" ? "Internet" : "Internet";
 
   const batteryValue = useMemo(() => {
     if (batteryLevel === null) {
@@ -190,6 +212,19 @@ export default function SettingsBar() {
     }
   }, [effectiveConnectionType, isOnline, locale]);
 
+  const batteryStatusIcon = isCharging ? batteryChargingIcon : batteryIcon;
+  const internetStatusIcon =
+    !isOnline ||
+    effectiveConnectionType === "slow-2g" ||
+    effectiveConnectionType === "2g"
+    ? !isOnline
+      ? wifiOffIcon
+      : wifiLowIcon
+    : wifiIcon;
+  const batteryStatusLabel =
+    locale === "pt" ? `Bateria: ${batteryValue}` : `Battery: ${batteryValue}`;
+  const internetStatusLabel = `Internet: ${internetValue}`;
+
   return (
     <Box
       className="settings-bar"
@@ -210,11 +245,21 @@ export default function SettingsBar() {
       </div>
 
       <div className="settings-right">
-        <span className="settings-item">
-          {batteryPrefix}: {batteryValue}
+        <span
+          className="settings-item settings-item-status"
+          role="img"
+          aria-label={batteryStatusLabel}
+          title={batteryStatusLabel}
+        >
+          <Icon src={batteryStatusIcon.src} size={20} className="settings-status-icon" />
         </span>
-        <span className="settings-item settings-item-internet">
-          {internetPrefix}: {internetValue}
+        <span
+          className="settings-item settings-item-status settings-item-internet"
+          role="img"
+          aria-label={internetStatusLabel}
+          title={internetStatusLabel}
+        >
+          <Icon src={internetStatusIcon.src} size={18} className="settings-status-icon" />
         </span>
         <span className="settings-item settings-item-clock">{formattedDateTime}</span>
       </div>

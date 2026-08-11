@@ -40,11 +40,27 @@
   .settings-item {
     display: inline-flex;
     align-items: center;
+    gap: 5px;
     line-height: 1;
     font-size: 12px;
     font-weight: 500;
     color: var(--color-text-secondary);
     white-space: nowrap;
+  }
+
+  .settings-status-icon {
+    color: currentColor;
+  }
+
+  .settings-item-status {
+    width: 24px;
+    height: 24px;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .settings-item-status + .settings-item-status {
+    width: 32px;
   }
 
   .settings-item-clock {

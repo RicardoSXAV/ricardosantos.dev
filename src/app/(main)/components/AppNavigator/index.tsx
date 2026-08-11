@@ -8,6 +8,7 @@ import "./index.styles.scss";
 import { useDesktopStore } from "@/stores/desktop.store";
 import appIcons from "@/assets/icons/apps";
 import Box from "@/components/interface/Box";
+import TrashIcon from "@/app/(main)/components/AppNavigator/components/TrashIcon";
 
 export default function AppNavigator() {
   const {
@@ -186,7 +187,6 @@ export default function AppNavigator() {
         tabIndex={0}
         layoutId="trash"
         layout
-        whileHover={{ scale: 1.1 }}
         animate={{ opacity: 1 }}
         transition={{
           layout: { type: "spring", stiffness: 300, damping: 30 }
@@ -199,7 +199,7 @@ export default function AppNavigator() {
           }
         }}
       >
-        <Image src={appIcons.trash} className="app-icon" alt="Trash" fill />
+        <TrashIcon className="app-icon" open={draggedItemNearTrash !== null} />
       </motion.div>
     </Box>
   );

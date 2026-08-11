@@ -159,6 +159,14 @@
       background-color: transparent;
       z-index: 3;
       filter: none;
+
+      // Inline SVG (animated lid) — it has no tile background, so no rounding
+      // or hover shine, and the lifted lid must not be clipped.
+      svg.app-icon {
+        display: block;
+        border-radius: 0;
+        overflow: visible;
+      }
     }
 
     .minimized-indicator {
