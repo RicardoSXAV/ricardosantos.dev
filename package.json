@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "NEXT_DIST_DIR=.next-production next build",
-    "start": "NEXT_DIST_DIR=.next-production next start",
+    "build": "next build",
+    "build:local": "NEXT_DIST_DIR=.next-production next build",
+    "start": "next start",
+    "start:local": "NEXT_DIST_DIR=.next-production next start",
     "lint": "next lint"
   },
   "dependencies": {
