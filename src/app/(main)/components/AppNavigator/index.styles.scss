@@ -166,6 +166,11 @@
         display: block;
         border-radius: 0;
         overflow: visible;
+        // The hand-drawn bin intentionally has transparent room around its
+        // silhouette. Scale the entire SVG (rather than stretching it) so its
+        // visible height matches the 48px app tiles while preserving its form.
+        transform: translateY(-1px) scale(1.1);
+        transform-origin: center;
       }
     }
 

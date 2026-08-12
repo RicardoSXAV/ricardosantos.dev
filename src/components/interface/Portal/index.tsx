@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 interface PortalProps {
@@ -13,7 +13,7 @@ interface PortalProps {
 }
 
 export default function Portal({ children, position, className }: PortalProps) {
-  const portalRoot = useRef<HTMLDivElement | null>(null);
+  const [portalRoot, setPortalRoot] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let root = document.getElementById("portal-root") as HTMLDivElement;
@@ -22,7 +22,7 @@ export default function Portal({ children, position, className }: PortalProps) {
       root.id = "portal-root";
       document.body.appendChild(root);
     }
-    portalRoot.current = root;
+    setPortalRoot(root);
 
     return () => {
       if (root && root.children.length === 0) {
@@ -31,7 +31,7 @@ export default function Portal({ children, position, className }: PortalProps) {
     };
   }, []);
 
-  if (!portalRoot.current) return null;
+  if (!portalRoot) return null;
 
   const content = (
     <div
@@ -46,5 +46,5 @@ export default function Portal({ children, position, className }: PortalProps) {
     </div>
   );
 
-  return createPortal(content, portalRoot.current);
+  return createPortal(content, portalRoot);
 }

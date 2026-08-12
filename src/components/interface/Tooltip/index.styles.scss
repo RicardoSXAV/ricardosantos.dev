@@ -1,0 +1,86 @@
+.tooltip-anchor {
+  display: inline-flex;
+  align-items: center;
+}
+
+.tooltip-portal {
+  z-index: 10001;
+  pointer-events: none;
+}
+
+.tooltip-shift {
+  transform: translateX(-50%);
+
+  &.tooltip-placement-top {
+    transform: translate(-50%, -100%);
+  }
+}
+
+/* The bubble is drawn as one SVG path (fill + outline), so nothing is layered
+   on top of anything else and the edge never changes colour mid-shape.
+   `--tooltip-tail` must match TAIL_HEIGHT in index.tsx. */
+.tooltip {
+  --tooltip-tail: 7px;
+
+  position: relative;
+  display: block;
+  padding: 5px 13px 6px;
+  user-select: none;
+  will-change: transform, opacity;
+
+  &.tooltip-placement-bottom {
+    padding-top: calc(5px + var(--tooltip-tail));
+    transform-origin: top center;
+  }
+
+  &.tooltip-placement-top {
+    padding-bottom: calc(6px + var(--tooltip-tail));
+    transform-origin: bottom center;
+  }
+}
+
+.tooltip-glass {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+.tooltip-shape {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  filter: var(--tooltip-shadow);
+}
+
+.tooltip-label {
+  position: relative;
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: var(--tooltip-text);
+}
+
+.tooltip-theme-dark {
+  --tooltip-surface-top: rgba(48, 58, 78, 0.9);
+  --tooltip-surface-bottom: rgba(22, 29, 45, 0.92);
+  --tooltip-edge-top: rgba(226, 232, 240, 0.3);
+  --tooltip-edge-bottom: rgba(148, 163, 184, 0.16);
+  --tooltip-text: #f1f5f9;
+  --tooltip-shadow: drop-shadow(0 1px 1px rgba(2, 6, 23, 0.35))
+    drop-shadow(0 8px 18px rgba(2, 6, 23, 0.45));
+}
+
+.tooltip-theme-light {
+  --tooltip-surface-top: rgba(255, 255, 255, 0.94);
+  --tooltip-surface-bottom: rgba(236, 241, 248, 0.92);
+  --tooltip-edge-top: rgba(15, 23, 42, 0.08);
+  --tooltip-edge-bottom: rgba(15, 23, 42, 0.18);
+  --tooltip-text: rgba(15, 23, 42, 0.84);
+  --tooltip-shadow: drop-shadow(0 1px 1px rgba(15, 23, 42, 0.1))
+    drop-shadow(0 8px 18px rgba(15, 23, 42, 0.16));
+}
