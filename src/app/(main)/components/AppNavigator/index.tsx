@@ -10,6 +10,8 @@ import appIcons from "@/assets/icons/apps";
 import Box from "@/components/interface/Box";
 import TrashIcon from "@/app/(main)/components/AppNavigator/components/TrashIcon";
 
+const isProtectedFromTrash = (appId: string) => appId === "settings";
+
 export default function AppNavigator() {
   const {
     navApps,
@@ -40,7 +42,7 @@ export default function AppNavigator() {
   };
 
   const handleDragEnd = (id: string, info: PanInfo) => {
-    if (isNearTrash(info.point)) {
+    if (!isProtectedFromTrash(id) && isNearTrash(info.point)) {
       const removedApp = navApps.find((app) => app.id === id);
       setNavApps(navApps.filter((app) => app.id !== id));
 
@@ -144,7 +146,11 @@ export default function AppNavigator() {
                 onClick={() => handleAppClick(app.id)}
                 onDragStart={() => setDraggingItemId(app.id)}
                 onDrag={(_, info) => {
-                  setDraggedItemNearTrash(isNearTrash(info.point) ? app.id : null);
+                  setDraggedItemNearTrash(
+                    !isProtectedFromTrash(app.id) && isNearTrash(info.point)
+                      ? app.id
+                      : null,
+                  );
                 }}
                 onDragEnd={(_, info) => handleDragEnd(app.id, info)}
                 whileHover={{ scale: 1.1 }}

@@ -4,13 +4,13 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
 import logoIcon from "@/assets/icons/logo.svg";
-import batteryChargingIcon from "@/assets/icons/interface/battery-charging.svg";
-import batteryIcon from "@/assets/icons/interface/battery.svg";
 import wifiLowIcon from "@/assets/icons/interface/wifi-low.svg";
 import wifiOffIcon from "@/assets/icons/interface/wifi-off.svg";
 import wifiIcon from "@/assets/icons/interface/wifi.svg";
+import BatteryStatusIcon from "@/app/(main)/components/SettingsBar/components/BatteryStatusIcon";
 import Box from "@/components/interface/Box";
 import Icon from "@/components/interface/Icon";
+import Tooltip from "@/components/interface/Tooltip";
 import { useLocaleStore } from "@/stores/locale.store";
 import { useDesktopStore } from "@/stores/desktop.store";
 import { STATIC_APP_NAMES } from "@/stores/data/desktop.data";
@@ -212,7 +212,6 @@ export default function SettingsBar() {
     }
   }, [effectiveConnectionType, isOnline, locale]);
 
-  const batteryStatusIcon = isCharging ? batteryChargingIcon : batteryIcon;
   const internetStatusIcon =
     !isOnline ||
     effectiveConnectionType === "slow-2g" ||
@@ -245,22 +244,26 @@ export default function SettingsBar() {
       </div>
 
       <div className="settings-right">
-        <span
+        <Tooltip
+          content={batteryStatusLabel}
           className="settings-item settings-item-status"
           role="img"
           aria-label={batteryStatusLabel}
-          title={batteryStatusLabel}
         >
-          <Icon src={batteryStatusIcon.src} size={20} className="settings-status-icon" />
-        </span>
-        <span
+          <BatteryStatusIcon
+            className="settings-status-icon settings-battery-icon"
+            level={batteryLevel}
+            charging={isCharging === true}
+          />
+        </Tooltip>
+        <Tooltip
+          content={internetStatusLabel}
           className="settings-item settings-item-status settings-item-internet"
           role="img"
           aria-label={internetStatusLabel}
-          title={internetStatusLabel}
         >
           <Icon src={internetStatusIcon.src} size={18} className="settings-status-icon" />
-        </span>
+        </Tooltip>
         <span className="settings-item settings-item-clock">{formattedDateTime}</span>
       </div>
     </Box>
