@@ -100,7 +100,7 @@ export default function Window({
         width, 
         height,
         pointerEvents: isMinimized ? "none" : "auto",
-        transformPerspective: 1000
+        transformPerspective: isMinimized ? 1000 : undefined,
       }}
       onClick={(e) => {
         e.stopPropagation();
