@@ -1,0 +1,467 @@
+.github-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--github-app-bg);
+  color: var(--github-app-text);
+  overflow: hidden;
+}
+
+/* ── Top bar ── */
+.gh-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--github-app-header-bg);
+  border-bottom: 1px solid var(--github-app-border);
+  flex-shrink: 0;
+}
+
+.gh-topbar-identity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.gh-topbar-mark {
+  color: var(--github-app-text);
+}
+
+.gh-topbar-user {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--github-app-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gh-topbar-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 1 220px;
+  min-width: 0;
+  padding: 4px 10px;
+  border: 1px solid var(--github-app-border);
+  border-radius: var(--radius-sm);
+  color: var(--github-app-text-muted);
+  background: var(--github-app-bg);
+}
+
+.gh-topbar-search-text {
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gh-kbd {
+  display: inline-block;
+  padding: 0 4px;
+  border: 1px solid var(--github-app-border);
+  border-radius: 3px;
+  font-family: var(--font-geist-mono, monospace);
+  font-size: 10px;
+  line-height: 14px;
+}
+
+/* ── Tabs ── */
+.gh-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  padding: 0 10px;
+  background: var(--github-app-header-bg);
+  border-bottom: 1px solid var(--github-app-border);
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.gh-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 8px 10px;
+  border-bottom: 2px solid transparent;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--github-app-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+
+  &:hover {
+    color: var(--github-app-text);
+    border-bottom-color: var(--github-app-border-strong);
+  }
+
+  &--active {
+    color: var(--github-app-text);
+    font-weight: 600;
+    border-bottom-color: var(--github-app-tab-active);
+  }
+}
+
+.gh-tab-count {
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--github-app-button-bg);
+  border: 1px solid var(--github-app-border);
+  font-size: 9px;
+  line-height: 15px;
+  color: var(--github-app-text-muted);
+  transition: opacity var(--transition-normal);
+
+  &--pending {
+    opacity: 0.55;
+  }
+}
+
+/* ── Scroll area ── */
+.gh-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--github-app-border);
+    border-radius: var(--radius-full);
+  }
+}
+
+.gh-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 14px;
+}
+
+/* ── Sidebar ── */
+.gh-sidebar {
+  flex: 0 0 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gh-avatar {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  max-width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--github-app-border);
+  align-self: flex-start;
+}
+
+.gh-avatar-img {
+  object-fit: cover;
+}
+
+.gh-identity {
+  margin-top: 4px;
+}
+
+.gh-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--github-app-text);
+}
+
+.gh-login {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.25;
+  color: var(--github-app-text-muted);
+}
+
+.gh-bio {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--github-app-text);
+}
+
+.gh-follow-button {
+  display: block;
+  margin-top: 4px;
+  padding: 5px 12px;
+  border: 1px solid var(--github-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--github-app-button-bg);
+  color: var(--github-app-text);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+
+  &:hover {
+    background: var(--github-app-button-hover);
+    border-color: var(--github-app-border-strong);
+  }
+}
+
+.gh-follow-counts {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--github-app-text-muted);
+  transition: opacity var(--transition-normal);
+
+  strong {
+    font-weight: 600;
+    color: var(--github-app-text);
+  }
+
+  &--pending {
+    opacity: 0.55;
+  }
+}
+
+.gh-follow-icon {
+  color: var(--github-app-text-muted);
+}
+
+.gh-dot-separator {
+  color: var(--github-app-text-muted);
+}
+
+.gh-details {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.gh-detail {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--github-app-text);
+
+  .icon-component {
+    color: var(--github-app-text-muted);
+  }
+}
+
+/* ── Main column ── */
+.gh-main {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* README card */
+.gh-readme-card {
+  padding: 14px 16px 16px;
+  border: 1px solid var(--github-app-border);
+  border-radius: var(--radius-md);
+  background: var(--github-app-bg);
+}
+
+.gh-readme-path {
+  margin: 0 0 12px;
+  font-family: var(--font-geist-mono, monospace);
+  font-size: 11px;
+  color: var(--github-app-text-muted);
+}
+
+.gh-readme-file {
+  color: var(--github-app-text);
+}
+
+.gh-readme-ext {
+  color: var(--github-app-text-muted);
+}
+
+.gh-readme-greeting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--github-app-border);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--github-app-text);
+}
+
+.gh-emoji {
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+.gh-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  & + & {
+    margin-top: 6px;
+  }
+}
+
+.gh-badge {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+
+  &--link {
+    transition: filter var(--transition-fast), transform var(--transition-fast);
+
+    &:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* The shields.io badges are 28px tall at native size; scaled down to sit in proportion
+   with the window's condensed type scale. */
+.gh-badge-img {
+  height: 24px;
+  width: auto;
+}
+
+.gh-facts {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gh-fact {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--github-app-text);
+}
+
+.gh-inline-link {
+  color: var(--github-app-accent);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.gh-readme-section {
+  margin-top: 16px;
+}
+
+.gh-readme-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--github-app-border);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--github-app-text);
+}
+
+/* Pinned */
+.gh-pinned-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.gh-pinned-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--github-app-text);
+}
+
+.gh-pinned-link {
+  font-size: 11px;
+  color: var(--github-app-accent);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.gh-pinned-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+/* ── Footer CTA ── */
+.github-footer {
+  padding: 8px 12px;
+  background: var(--github-app-header-bg);
+  border-top: 1px solid var(--github-app-border);
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.gh-cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px 8px 12px;
+  border-radius: var(--radius-full);
+  background: var(--github-app-cta);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(31, 136, 61, 0.22);
+  transition: background var(--transition-fast), box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+
+  &:hover {
+    background: var(--github-app-cta-hover);
+    box-shadow: 0 4px 10px rgba(31, 136, 61, 0.28);
+    transform: translateY(-1px);
+  }
+
+  .gh-cta-icon {
+    margin-right: 1px;
+  }
+
+  .gh-cta-arrow {
+    margin-left: 1px;
+    opacity: 0.78;
+  }
+}

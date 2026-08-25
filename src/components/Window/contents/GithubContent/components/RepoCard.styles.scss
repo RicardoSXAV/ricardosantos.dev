@@ -1,0 +1,98 @@
+.gh-repo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  min-height: 92px;
+  border: 1px solid var(--github-app-border);
+  border-radius: var(--radius-sm);
+  background: var(--github-app-bg);
+  text-decoration: none;
+  transition: border-color var(--transition-fast), background var(--transition-fast),
+    transform var(--transition-fast);
+
+  &:hover {
+    border-color: var(--github-app-border-strong);
+    background: var(--github-app-bg-subtle);
+    transform: translateY(-1px);
+
+    .gh-repo-name {
+      text-decoration: underline;
+    }
+  }
+}
+
+.gh-repo-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.gh-repo-icon {
+  color: var(--github-app-text-muted);
+}
+
+.gh-repo-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--github-app-accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gh-repo-visibility {
+  flex-shrink: 0;
+  padding: 0 6px;
+  border: 1px solid var(--github-app-border);
+  border-radius: var(--radius-full);
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--github-app-text-muted);
+}
+
+.gh-repo-description {
+  margin: 0;
+  flex: 1;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--github-app-text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gh-repo-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 10px;
+  color: var(--github-app-text-muted);
+  transition: opacity var(--transition-normal);
+
+  &--pending {
+    opacity: 0.55;
+  }
+}
+
+.gh-repo-language {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.gh-repo-language-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-full);
+}
+
+.gh-repo-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
